@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }:
 
 {
- # FireFox program settings
+  # FireFox program settings
 
   programs = {
     firefox = {
@@ -26,40 +26,20 @@
         };
 
         UserMessaging = {
-          ExtensionRecommendations = false;
+          ExtensionRecommendations = true;
           SkipOnboarding = true;
-        };
-
-        search.engines = {
-          "Nix Packages" = {
-            urls = [{
-              template = "https://search.nixos.org/packages?query=%s";
-              params = [
-                {
-                  name = "type";
-                  value = "packages";
-                }
-                {
-                  name = "query";
-                  value = "{searchTerms}";
-                }
-              ];
-            }];
-
-            icon =
-              "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            definedAliases = [ "@np" ];
-          };
         };
 
         search.force = true;
 
-        bookmarks = [{
-          name = "wikipedia";
-          tags = [ "wiki" ];
-          keyword = "wiki";
-          url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
-        }];
+        bookmarks = [
+          {
+            name = "wikipedia";
+            tags = [ "wiki" ];
+            keyword = "wiki";
+            url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
+          }
+        ];
 
         settings = {
 
@@ -68,8 +48,8 @@
           "general.smoothScroll" = true;
           "gfx.webrender.enabled" = true;
           "layout.css.backdrop-filter.enabled" = true;
-          "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
-          "signon.rememberSignons" = false;
+          "media.videocontrols.picture-in-picture.video-toggle.enabled" = true;
+          "signon.rememberSignons" = true;
           "svg.context-properties.content.enabled" = true;
 
           # We handle this elsewhere
@@ -94,8 +74,7 @@
           "plugins.enumerable_names" = "";
 
           # Use Mozilla instead of Google here.
-          "geo.provider.network.url" =
-            "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
+          # "geo.provider.network.url" = "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
 
           # No speculative content when searching.
           "browser.urlbar.speculativeConnect.enabled" = false;
@@ -106,8 +85,8 @@
           "browser.send_pings" = false;
 
           "browser.tabs.closeWindowWithLastTab" = false;
-          "browser.urlbar.placeholderName" = "DuckDuckGo";
-          "browser.search.defaultenginename" = "DuckDuckGo";
+          #"browser.urlbar.placeholderName" = "DuckDuckGo";
+          #"browser.search.defaultenginename" = "DuckDuckGo";
 
           # Safe browsing
           "browser.safebrowsing.enabled" = false;
@@ -178,39 +157,11 @@
           "layers.offmainthreadcomposition.async-animations" = true;
           "layers.async-video.enabled" = true;
           "html5.offmainthread" = true;
-
-          
-
         };
-
-        # userChrome = ''
-        #   /* some css */                        
-        # '';
-        # modified theme from https://github.com/Bali10050/FirefoxCSS
-        # userChrome = builtins.readFile ./userChrome.css;
-        # userContent = builtins.readFile ./userContent.css;
       };
     };
     # };
   };
 
   #nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
-
 }
-# NOTE: 
-# FireFox custom CSS files
-# Enable toolkit.legacyUserProfileCustomizations.stylesheets
-#   Go to about:config
-#   Click on „Accept the Risk and Continue”
-#   Doubleclick on toolkit.legacyUserProfileCustomizations.stylesheets if it isn't already enabled to true:
-#   Copy the CSS in your profiles chrome folder
-#   Go to about:profiles
-#   Find your profile -- ( „This is the profile in use and it cannot be deleted.” )
-#     Open the profiles root directory
-#     Create a folder called chrome
-#     Copy the preferred  
-#     userChrome.css 
-#         and  
-#     userContent.css 
-#       in there
-#   Restart Firefox

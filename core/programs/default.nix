@@ -3,14 +3,13 @@
   imports = [
 
     # Configuration for Programs
-
     # ./fish
+    #./git
     ./adb
     ./command-not-found
     ./corectrl
     ./dconf
     ./gamemode
-    #./git
     ./internet
     ./java
     ./konsole
