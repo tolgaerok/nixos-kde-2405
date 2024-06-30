@@ -9,7 +9,10 @@ let
 
   gitup = pkgs.writeScriptBin "gitup" ''
     #!/usr/bin/env bash
-
+    # Tolga Erok
+    # Ver: 2.0
+    # 30-Jun-2024
+    
     set -e
 
     # Directory of your Git repository
