@@ -1,5 +1,7 @@
 { stdenvNoCC, fetchzip }:
 
+# Tolga Erok
+
 stdenvNoCC.mkDerivation {
   pname = "fonts-tolga";
   version = "1.0-stable";
@@ -11,8 +13,11 @@ stdenvNoCC.mkDerivation {
 
   installPhase = ''
     runHook preInstall  
-    mkdir -p $out/share/fonts/truetype    
-    mv WEBDINGS.TTF webdings.ttf    
+    mkdir -p $out/share/fonts/truetype
+
+    # CHANGE THE F***** font to lower case!    
+    mv WEBDINGS.TTF webdings.ttf 
+               
     find . -name "*.ttf" -type f -exec install -Dm644 {} -t "$out/share/fonts/truetype" \;
     runHook postInstall 
   '';
