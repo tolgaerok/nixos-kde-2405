@@ -14,7 +14,7 @@ stdenvNoCC.mkDerivation {
     mkdir -p $out/share/fonts/truetype    
     mv WEBDINGS.TTF webdings.ttf    
     find . -name "*.ttf" -type f -exec install -Dm644 {} -t "$out/share/fonts/truetype" \;
-    runHook postInstall  # Optional: Run any post-installation hooks
+    runHook postInstall 
   '';
 }
 
