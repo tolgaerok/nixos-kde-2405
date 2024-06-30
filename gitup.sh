@@ -5,7 +5,7 @@ set -e
 # Directory of your Git repository
 REPO_DIR="/etc/nixos"
 
-# Commit message with timestamp and custom changes
+# Commit message with timestamp and custom changes ---------
 COMMIT_MSG="(ツ)_/¯ Edit: $(date '+%d-%m-%Y %I:%M:%S %p')"
 
 # Ensure the Git repository is initialized and 'origin' remote is set
