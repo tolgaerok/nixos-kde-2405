@@ -18,7 +18,7 @@ let
     # Commit message with timestamp and custom changes
     COMMIT_MSG="(ツ)_/¯ Edit: $(date '+%d-%m-%Y %I:%M:%S %p')"
 
-    # Ensure the Git repository is initialized and 'origin' remote is set
+    # Ensure the Git repository is initialized and 'origin' remote is set--
     if [ ! -d "$REPO_DIR/.git" ]; then
         echo "Initializing Git repository in $REPO_DIR..."
         sudo git init "$REPO_DIR"
