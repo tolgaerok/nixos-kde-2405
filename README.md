@@ -2,7 +2,7 @@
   <h1 style="font-size: 24px; color: blue;">My NixOs 24.05 environment, KDE & Nvidia</h1>
 </div>
 
- #### My NixOS GNOME 24.05 also available
+ #### My NixOS GNOME 24.05 also available !
  ```bash
  https://github.com/tolgaerok/nixos-2405-gnome
  ```
