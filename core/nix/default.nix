@@ -46,9 +46,9 @@ in
       cores = 0;               # Number of CPU cores allocated for the task (0 means all available cores)
       sandbox = "relaxed";     # Sandbox mode for running tasks, allowing broader system access for flexibility
 
-      # Accelerate package building (optimized for 8GB RAM and quad-core processor with Hyper-Threading)
+      # Accelerate package building (optimized for 27GB RAM and quad-core processor with Hyper-Threading)
       buildCores = lib.mkDefault 8;              # Specify 8 build cores for parallel building
-      max-jobs = lib.mkDefault 8;                # Set to 8 as the i7-4770 has 4 cores with 8 threads
+      max-jobs = lib.mkDefault 8;                # Set to 8 as the i7-4770 CPU @ 3.40GHz x 8 cores with 8 threads
       speedFactor = 3;                           # Set speed factor to 2 for build performance optimization
 
 
