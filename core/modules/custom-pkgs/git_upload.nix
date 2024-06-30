@@ -12,7 +12,7 @@ let
 
     set -e
 
-    # Directory of your Git repository----
+    # Directory of your Git repository----***********
     REPO_DIR="/etc/nixos"
 
     # Commit message with timestamp and custom changes
@@ -39,10 +39,10 @@ let
     sudo git commit -am "$COMMIT_MSG"
 
     # Pull changes from remote repository to avoid conflicts
-    sudo git pull --rebase origin main
+    sudo git pull --rebase origin master
 
     # Push changes to remote repository
-    sudo git push origin main
+    sudo git push origin master
 
     # Notification of completion
     echo "Files uploaded successfully."
