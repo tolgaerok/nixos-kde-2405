@@ -12,7 +12,7 @@ let
 
     set -e
 
-    # Directory of your Git repository----***********
+    # Directory of your Git repository  *** 
     REPO_DIR="/etc/nixos"
 
     # Commit message with timestamp and custom changes
