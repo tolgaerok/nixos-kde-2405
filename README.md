@@ -56,8 +56,37 @@
         <tr>
           <td>SATA</td>
           <td>SAMSUNG SSD 870 EVO 500GB</td>
-        </tr>
+        </tr>        
       </table>
     </td>
+
+    
   </tr>
 </table>
+
+# Notes:
+
+
+### Update NIXOS to 24.11 - Latest Version.
+
+```bash
+sudo nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixos
+sudo nix-channel --update
+sudo nixos-rebuild switch --upgrade
+```
+
+- Install git and some other programs for KDE 6
+
+- It take some Time.. Just Wait!
+```bash
+nix-env -iA nixos.git     - 53.18 MiB download, 119.48 MiB unpacked
+nix-env -iA nixos.hyfetch - 1.80 MiB download, 14.05 MiB unpacked
+nix-shell -p kdePackages.plasma-workspace - 1028.37 MiB download, 2834.11 MiB unpacked
+nix-shell -p kdePackages.sddm      - 3.49 MiB download, 5.62 MiB unpacked
+nix-shell -p kdePackages.full      - 74.62 MiB download, 232.35 MiB unpacked
+nix-env -iA nixos.kdePackages.kwin - 188.33 MiB download, 195.40 MiB unpacked
+```
+- You can find many programs here for NIX OS
+```bash
+https://search.nixos.org/packages?channel=unstable
+```
