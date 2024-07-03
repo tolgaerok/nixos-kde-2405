@@ -90,3 +90,34 @@ nix-env -iA nixos.kdePackages.kwin - 188.33 MiB download, 195.40 MiB unpacked
 ```bash
 https://search.nixos.org/packages?channel=unstable
 ```
+
+### BOOT SPACE ERROR
+If you are out of space on your /boot partition then follow the steps in the section below
+
+- Remove systemd boot, ideally this should be done automatically when systemd-boot is turned off, but 🤷.
+```bash
+bootctl remove
+```
+Then:
+```bash
+sudo rm -rf /boot/loader
+```
+#### Fix for /boot being out of space
+Rebuild but don't switch and store that config
+```bash
+sudo nixos-rebuild build
+```
+Run a garbage collection to remove the old system generation
+```bash
+sudo nix-collect-garbage -d
+```
+cd into /boot/kernels/
+```bash
+cd /boot/kernels
+```
+List the files and then delete any old kernels, DO NOT DELETE NEW ONES, BE VERY CAREFUL
+Rebuild and switch
+```bash
+sudo nixos-rebuild switch
+```
+Now reboot
