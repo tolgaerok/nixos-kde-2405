@@ -2,6 +2,9 @@
   config,
   lib,
   pkgs,
+  unstable,
+  inputs,
+  user,
   ...
 }:
 with lib;
@@ -33,6 +36,24 @@ in
         "@wheel"
         "${name}"
       ];
+
+    extra-substituters = [
+        "https://nix-community.cachix.org"
+        "https://nix-gaming.cachix.org"
+        "https://nixpkgs-wayland.cachix.org"
+      ];
+     extra-trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+        "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+      ];
+
+      # Opinionated: disable global registry
+      flake-registry = "";
+
+      # Workaround for https://github.com/NixOS/nix/issues/9574
+      nix-path = config.nix.nixPath;
+
       auto-optimise-store = true;
       supportedFeatures = [ "big-parallel" ];    # Enable support for big parallel builds
       system-features = [ "i686-linux" "x86_64-linux" "big-parallel" "kvm" ];
@@ -43,7 +64,7 @@ in
         "repl-flake"
       ];
 
-      cores = 0;               # Number of CPU cores allocated for the task (0 means all available cores)
+      cores = 8;               # Number of CPU cores allocated for the task (0 means all available cores)
       sandbox = "relaxed";     # Sandbox mode for running tasks, allowing broader system access for flexibility
 
       # Accelerate package building (optimized for 8GB RAM and dual-core processor with Hyper-Threading)
@@ -73,5 +94,33 @@ in
       options = "--delete-older-than 10d";  # Specify options for the task: delete files older than 10 days
       randomizedDelaySec = "14m";        # Introduce a randomized delay of up to 14 minutes before executing the task
     };
+
+    # Opinionated: enable channels
+    channel.enable = true;
+  };
+
+  # This will additionally add your inputs to the system's legacy channels
+  # Making legacy nix commands consistent as well, awesome!
+  environment.etc =
+    lib.mapAttrs'
+    (name: value: {
+      name = "nix/path/${name}";
+      value.source = value.flake;
+    })
+    config.nix.registry;
+
+  # XDG  paths
+  environment.sessionVariables = rec {
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_RUNTIME_DIR = "/run/user/$UID";
+    XDG_STATE_HOME = "$HOME/.local/state";
+
+    # Not officially in the specification
+    XDG_BIN_HOME = "$HOME/.local/bin";
+    PATH = [
+      "${XDG_BIN_HOME}"
+    ];
   };
 }

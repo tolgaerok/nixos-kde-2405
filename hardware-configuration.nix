@@ -34,20 +34,21 @@ in
       "tcp_westwood"  # Westwood: Particularly effective in wireless networks
     ];
 
-    extraModprobeConfig = lib.mkMerge [
-      # Control and optimize how an application utilizes the processor resources based on i7-3667U
-      "options nptl Thread.ProcessorCount=8 Thread.MaxProcessorCount=8 Thread.MinFreeProcessorCount=1 Thread.JobThreadPriority=0"
-    ];
+    extraModprobeConfig = ''
+      options intel_idle max_cstate=0
+    '';
 
     kernel.sysctl = {
-      "kernel.panic" = "60";
-      "kernel.pty.max" = 24000;                       # Sets the maximum number of pseudo-terminal (pty) devices.
-      "kernel.sysrq" = 1;                             # Enables the SysRq key, which can be used for various low-level system commands.
+      "kernel.panic" = "60";                             # Sets the time (in seconds) the kernel waits before automatically rebooting after a panic.
+      "kernel.pty.max" = 24000;                          # Sets the maximum number of pseudo-terminal (pty) devices.
+      "kernel.sched_autogroup_enabled" = 0;              # Disables automatic grouping of tasks in the scheduler.
+      "kernel.sched_migration_cost_ns" = 5000000;        # Sets the cost (in nanoseconds) of migrating a task to another CPU.
+      "kernel.sysrq" = 1;                                # Enables the SysRq key, which can be used for various low-level system commands.
       "net.ipv4.tcp_congestion_control" = "westwood"; # Sets the TCP congestion control algorithm to Westwood for IPv4 in the Linux kernel.
       "vm.dirty_background_bytes" = 268435456;        # Sets the amount of dirty memory at which background writeback starts (256 MB).
       "vm.dirty_bytes" = 536870912;                   # Sets the amount of dirty memory at which a process generating dirty memory will itself start writeback (512 MB).
       "vm.dirty_ratio" = "25";                        # 25% of all memory optionally as write cache
-      "vm.max_map_count" = 1000000;
+      "vm.max_map_count" = 1000000;                   # Sets the maximum number of memory map areas a process can have.
       "vm.swappiness" = 10;                           # Reduces the tendency of the kernel to swap out inactive memory pages.
       "vm.vfs_cache_pressure" = 50;                   # Controls the tendency of the kernel to reclaim the memory which is used for caching of directory and inode objects.
       # "net.core.default_qdisc" = "cake";            # Sets the default queuing discipline (qdisc) for network interfaces to CAKE for improved network fairness and latency.
@@ -60,7 +61,7 @@ in
       "intel_iommu=on"              # Enable IOMMU
       "io_delay=none"               # Disable I/O delay accounting
       "iomem=relaxed"               # Allow more relaxed I/O memory access
-      "iommu=pt"                    # Allow pass-through to vm
+      "iommu=pt"                    # Enables passthrough mode for the IOMMU, allowing direct access to hardware devices.
       "irqaffinity=0-7"             # Set IRQ affinity to CPUs 0-3 (Intel Core i7-3667U specific)
       "loglevel=3"                  # Set kernel log level to 3 (default)
       "logo.nologo"                 # disable boot logo if any
@@ -82,8 +83,8 @@ in
       # "isolcpus=0-7"                  # isolates CPUs 1 to 7 from the general system scheduler, often used for dedicated processing to prevent interference from unrelated tasks
       # "nohz_full=0-7"                 # isolates CPUs 1 to 7 from the tickless idle scheduler, which could potentially improve performance on those cores by reducing interruptions from timer ticks
       # "rcu_nocbs=0-7"                 # designates CPUs 1 to 7 for RCU (Read-Copy Update) processing, isolating them from other system tasks to enhance performance
-      # "systemd.show_status=auto"      # Commented out, not used in this configuration
       # "rd.systemd.show_status=auto"   # disable systemd status messages
+      # "systemd.show_status=auto"      # Commented out, not used in this configuration
     ];
 
     initrd.kernelModules = [
@@ -95,7 +96,7 @@ in
     initrd.availableKernelModules = [
       "ahci"        # Enables the Advanced Host Controller Interface (AHCI) driver, typically used for SATA (Serial ATA) controllers.
       "ehci_pci"    # Enables the Enhanced Host Controller Interface (EHCI) driver for PCI-based USB controllers, providing support for USB 2.0.
-      "nvidia"
+      "nvidia"      # Enables the Nvidia driver module.
       "nvme"        # module in your initrd configuration can be useful if you plan to use an NVMe drive in the future
       "sd_mod"      # Enables the SCSI disk module (sd_mod), which allows the system to recognize and interact with SCSI-based storage devices.
       "sr_mod"      # Loads the SCSI (Small Computer System Interface) CD/DVD-ROM driver, allowing the system to recognize and use optical drives.
@@ -108,8 +109,7 @@ in
     ];
 
     extraModulePackages = with config.boot.kernelPackages; [ ];
-
-    supportedFilesystems = ["ntfs" "ntfs3"];
+    supportedFilesystems = ["ntfs" "ntfs3"];    # Enable support for NTFS and NTFS3 filesystems.
   };
 
   fileSystems."/" =
@@ -170,14 +170,15 @@ in
   #---------------------------------------------------------------------
   hardware = {
     # bluetooth.enable = false;
-    bluetooth.powerOnBoot = false;    # Power management & Analyze power consumption on Intel-based laptops
-    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    enableAllFirmware = true;
-    pulseaudio.enable = false;
-    usb-modeswitch.enable = true;
+    bluetooth.powerOnBoot = false;    # Disable Bluetooth power on boot for power management and to analyze power consumption on Intel-based laptops.
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;  # Update Intel CPU microcode if redistributable firmware is enabled.
+    enableAllFirmware = true;         # Enable all firmware.
+    pulseaudio.enable = false;        # Disable PulseAudio.
+    usb-modeswitch.enable = true;     # Enable USB Modeswitch to manage mobile broadband devices.
+
 
     sane = {
-      enable = true; # Scanner and printing drivers
+      enable = true;                 # Scanner and printing drivers
       extraBackends = extraBackends; # Scanner and printing drivers
     };
   };
