@@ -34,13 +34,6 @@ in
 
     samba = {
       enable = true;
-<<<<<<< HEAD
-      package = pkgs.samba4Full;
-      openFirewall = true;
-      securityType = "user";
-      extraConfig = ''
-        workgroup = WORKGROUP
-=======
       openFirewall = true;
       package = pkgs.samba4Full;
       securityType = "user";
@@ -48,7 +41,6 @@ in
         # General Settings
         workgroup = WORKGROUP
         bind interfaces only = yes
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
         dns proxy = no
         name resolve order = lmhosts wins bcast host
         netbios name = ${config.networking.hostName}
@@ -56,49 +48,6 @@ in
         security = user
         server role = standalone
         server string = Samba server (version: %v, protocol: %R)
-<<<<<<< HEAD
-        bind interfaces only = yes
-        # hosts allow = 127.0.0. 10. 172.16.0.0/255.240.0.0 192.168. 169.254. fd00::/8 fe80::/10 localhost
-        hosts allow = 127.0.0.1 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 169.254.0.0/16 ::1 fd00::/8 fe80::/10
-        hosts deny = allow
-        deadtime = 30
-        guest account = nobody
-        inherit permissions = yes
-        map to guest = bad user
-        pam password change = yes
-        use sendfile = yes
-        socket options = SO_KEEPALIVE SO_REUSEADDR SO_BROADCAST TCP_NODELAY IPTOS_LOWDELAY IPTOS_THROUGHPUT SO_SNDBUF=262144 SO_RCVBUF=131072
-        wins support = true
-        read raw = yes
-        write raw = yes
-        max xmit = 65535
-        large readwrite = yes
-        client min protocol = COREPLUS
-        server min protocol = COREPLUS
-        aio read size = 1
-        aio write size = 1
-        vfs objects = acl_xattr catia streams_xattr
-        vfs objects = catia streams_xattr
-        client ipc max protocol = SMB3
-        client ipc min protocol = COREPLUS
-        client max protocol = SMB3
-        server max protocol = SMB3
-        log file = /var/log/samba/log.%m
-        max log size = 500
-        log level = 1 auth:3 smb:3 smb2:3
-        ea support = yes
-        fruit:metadata = stream
-        fruit:model = Macmini
-        fruit:veto_appledouble = no
-        fruit:posix_rename = yes
-        fruit:zero_file_id = yes
-        fruit:wipe_intentionally_left_blank_rfork = yes
-        fruit:delete_empty_adfiles = yes
-        printcap name = cups
-        load printers = yes
-        cups options = raw
-        disable spoolss = yes
-=======
 
         # Access Control        
         deadtime = 30
@@ -150,7 +99,6 @@ in
         fruit:zero_file_id = yes
         load printers = yes
         printcap name = cups
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
       '';
 
       shares = {

@@ -10,12 +10,8 @@
 
     # Add Konsole (bash) aliases
     bash = {
-<<<<<<< HEAD
-
-=======
       # enable = true;
       enableCompletion = true;
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
       # Add any custom bash shell or aliases here
       shellAliases = {
 
@@ -62,8 +58,6 @@
         trim = "sudo fstrim -av";
 
         #---------------------------------------------------------------------
-<<<<<<< HEAD
-=======
         # Chmod commands
         #---------------------------------------------------------------------
         tolga-000 = "sudo chmod -R 000";
@@ -74,7 +68,6 @@
         tolga-mx = "sudo chmod a+x";
 
         #---------------------------------------------------------------------
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
         # Fun stuff
         #---------------------------------------------------------------------
 
@@ -97,30 +90,20 @@
         # Fedora alias
         #----------------------------------------------------------------------
         cj = "sudo journalctl --rotate; sudo journalctl --vacuum-time=1s";
-<<<<<<< HEAD
-        tolga-cong = "sysctl net.ipv4.tcp_congestion_control";
-        tolga-fmem = "echo && echo 'Current mem:' && free -h && sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches' && echo && echo 'After:' && free -h";
-        tolga-fmem2 = "echo && echo 'Current mem:' && free -h && sudo sh -c '/bin/sync && echo 3 > /proc/sys/vm/drop_caches' && echo && echo 'After:' && free -h";
-=======
         tolga-batt = "/etc/nixos/core/system/systemd/battery.sh";
         tolga-cong = "sysctl net.ipv4.tcp_congestion_control";
         tolga-f = "find . | grep ";
         tolga-fmem = "echo && echo 'Current mem:' && free -h && sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches' && echo && echo 'After:' && free -h";
         tolga-fmem2 = "echo && echo 'Current mem:' && free -h && sudo sh -c '/bin/sync && echo 3 > /proc/sys/vm/drop_caches' && echo && echo 'After:' && free -h";
         tolga-h = "history | grep ";
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
         tolga-io = "cat /sys/block/sda/queue/scheduler";
         tolga-sess = ''session=$XDG_SESSION_TYPE && echo "" && gum spin --spinner dot --title "Current XDG session is: [ $session ] " -- sleep 2'';
         tolga-sys = "echo && tolga-io && echo && tolga-cong && echo && echo 'ZSWAP status: ( Y = ON )' && cat /sys/module/zswap/parameters/enabled && systemctl restart earlyoom && systemctl status earlyoom --no-pager";
         tolga-sysctl-reload = "sudo udevadm control --reload-rules && sudo udevadm trigger && sudo sysctl --system && sudo sysctl -p && sudo mount -a && sudo systemctl daemon-reload";
-<<<<<<< HEAD
-        tolga-batt = "/etc/nixos/core/system/systemd/battery.sh";
-=======
         tolga-trim = "sudo fstrim -av";
 
 
 
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
       };
     };
   };

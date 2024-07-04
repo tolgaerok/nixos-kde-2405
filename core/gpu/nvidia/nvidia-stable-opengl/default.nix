@@ -68,13 +68,10 @@
     "NVreg_RegistryDwords=RMUseSwI2c=0x01;RMI2cSpeed=100"
     # When (if!) I get another nvidia GPU, check for resizeable bar
     # settings
-<<<<<<< HEAD
-=======
     # Set temporary file path
     "NVreg_TemporaryFilePath=/var/tmp"
     # Preserve video memory allocations across modesets and VT switches
     "NVreg_PreserveVideoMemoryAllocations=1"
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
   ];
 
   # Replace a glFlush() with a glFinish() - this prevents stuttering
@@ -99,17 +96,6 @@
     # (despite it being blacklisted)
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     # Hardware cursors are currently broken on nvidia
-<<<<<<< HEAD
-    LIBVA_DRIVER_NAME = "nvidia";
-    WLR_NO_HARDWARE_CURSORS = "1";
-    NIXOS_OZONE_WL = "1";
-    __GL_THREADED_OPTIMIZATION = "1";
-    __GL_SHADER_CACHE = "1";
-
-  };
-
-  # Specify the Nvidia video driver for Xorg 
-=======
     WLR_NO_HARDWARE_CURSORS = "1";
     LIBVA_DRIVER_NAME = "nvidia";
     NIXOS_OZONE_WL = "1";
@@ -118,16 +104,12 @@
   };
 
   # Specify the Nvidia video driver for Xorg
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
   services.xserver.videoDrivers = [ "nvidia" ];
 
   # Packages related to NVIDIA graphics
   environment.systemPackages = with pkgs; [
     clinfo
-<<<<<<< HEAD
-=======
     cudaPackages.cudatoolkit
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
     gwe
     nvtopPackages.nvidia
     virtualglLib

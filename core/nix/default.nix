@@ -46,18 +46,10 @@ in
       cores = 0;               # Number of CPU cores allocated for the task (0 means all available cores)
       sandbox = "relaxed";     # Sandbox mode for running tasks, allowing broader system access for flexibility
 
-<<<<<<< HEAD
-      # Accelerate package building (optimized for 27GB RAM and quad-core processor with Hyper-Threading)
-      buildCores = lib.mkDefault 8;              # Specify 8 build cores for parallel building
-      max-jobs = lib.mkDefault 8;                # Set to 8 as the i7-4770 CPU @ 3.40GHz x 8 cores with 8 threads
-      speedFactor = 3;                           # Set speed factor to 2 for build performance optimization
-
-=======
       # Accelerate package building (optimized for 8GB RAM and dual-core processor with Hyper-Threading)
       buildCores = lib.mkDefault 8;              # Specify 4 build cores for parallel building
       max-jobs = lib.mkDefault 8;                # Set to 4 as the i7-3667U has 2 cores with 4 threads
       speedFactor = 2;                           # Set speed factor to 2 for build performance optimization
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
 
       trusted-users = [
         "${name}"

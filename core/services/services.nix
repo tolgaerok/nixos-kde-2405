@@ -41,17 +41,10 @@ in
     };
     
     # Enable and configure NextDNS service
-<<<<<<< HEAD
-    nextdns = {
-      enable = true;
-      arguments = ["-config" "nixfolio-48b246.dns.nextdns.io"];
-    };    
-=======
     #nextdns = {
     #  enable = true;
     #  arguments = ["-config" "nixfolio-48b246.dns.nextdns.io"];
     #};
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
 
     # Timesyncd: Synchronizes system time with network time servers
     timesyncd.enable = true;
@@ -79,31 +72,18 @@ in
         ACTION=="add|change", SUBSYSTEM=="bdi", ATTR{min_ratio}="2", ATTR{max_ratio}="50"
         
         # Disable Ethernet Wake-on-LAN
-<<<<<<< HEAD
-        ACTION=="add", SUBSYSTEM=="net", NAME=="enp*", RUN+="${pkgs.ethtool}/sbin/ethtool -s \$name wol d"
-=======
         #ACTION=="add", SUBSYSTEM=="net", NAME=="enp*", RUN+="${pkgs.ethtool}/sbin/ethtool -s \$name wol d"
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
 
         # Disable serial ports ttyS1 to ttyS3
         KERNEL=="ttyS[1-3]", SUBSYSTEM=="tty", ACTION=="add", ATTR{enabled}="0"
 
         # Autosuspend PCI devices
-<<<<<<< HEAD
-        # ACTION=="add", SUBSYSTEM=="pci", TEST=="power/control", ATTR{power/control}="auto"
-
-        # Autosuspend USB devices
-        # ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
-
-        # Set scheduler to 'KYBER' for certain block devices with ext4 filesystem
-=======
         #ACTION=="add", SUBSYSTEM=="pci", TEST=="power/control", ATTR{power/control}="auto"
 
         # Autosuspend USB devices
         #ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
 
         # Set scheduler to 'none' for certain block devices with ext4 filesystem
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
         ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="ext4", ATTR{../queue/scheduler}="kyber"
 
         # Set group for hpet to 'audio'
@@ -216,10 +196,7 @@ in
     # OpenSSH: Secure shell access
     openssh = {
       enable = true;    # Enable OpenSSH server
-<<<<<<< HEAD
-=======
       
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
       settings = {
         PermitRootLogin = lib.mkForce "yes";        # Allow root login
         UseDns = false;                             # Disable DNS lookup
@@ -230,14 +207,7 @@ in
 
       banner = ''
         # SSH login banner
-<<<<<<< HEAD
-               ⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠛⠛⠛⠋⠉⠈⠉⠉⠉⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿
-               ⣿⣿⣿⣿⣿⡿⠋⠁   Tolga Erok ⠀⠀⠀⠀⠛⢿⣿⣿⣿⣿
-               ⣿⣿⣿⣧⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⠀⣰⣿⣿⣿
-               ⣿⣿⣿⣿⡄⠈⠀⠀⠀ ¯\_(ツ)_/¯⠀  ⢀⣠⣴⣾⣿⣿⣿⣿⣿                    
-=======
                Tolga Erok ¯\_(ツ)_/¯⠀  ⢀⣠⣴⣾⣿⣿⣿⣿⣿                    
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
                >ligma
       '';
 
@@ -247,11 +217,7 @@ in
           path = "/etc/ssh/ssh_host_rsa_key";
           type = "rsa";
         }
-<<<<<<< HEAD
-
-=======
  
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
         {
           path = "/etc/ssh/ssh_host_ed25519_key";
           type = "ed25519"; # ED25519 key
@@ -260,15 +226,9 @@ in
     };
 
     # Power Profiles Daemon: Manages power profiles (disabled)
-<<<<<<< HEAD
-    power-profiles-daemon = {
-      enable = false;     # Disable power profiles daemon
-    };
-=======
     #power-profiles-daemon = {
     #  enable = false;     # Disable power profiles daemon
     #};
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
 
     #---------------------------------------------------------------------
     #   Enable CUPS to print documents.
@@ -283,21 +243,12 @@ in
     #--------------------------------------------------------------------- 
     #   Enable the SSH daemon
     #---------------------------------------------------------------------  
-<<<<<<< HEAD
-    sshd.enable = true;   # Enable SSH daemon (redundant with OpenSSH configuration above)
-
-    # Thermald: Thermal management daemon (disabled)
-    thermald = {
-      enable = false;     # Disable thermald service
-    };
-=======
     sshd.enable = lib.mkForce true;   # Enable SSH daemon (redundant with OpenSSH configuration above)
 
     # Thermald: Thermal management daemon (disabled)
     #thermald = {
     #  enable = false;     # Disable thermald service
     #};
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
   };
 
   # iPhone Support: Configures support for iPhone
