@@ -1,6 +1,6 @@
 # Tolga Erok
 # Tue Jul 2, 2024
-# My personal NIXOS KDE configuration 
+# My personal NIXOS KDE configuration .
 # 
 #              ¯\_(ツ)_/¯
 #   ███▄    █     ██▓   ▒██   ██▒    ▒█████       ██████ 
