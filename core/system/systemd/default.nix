@@ -63,6 +63,7 @@ in
     # When a program crashes, systemd will create a core dump file, typically in the /var/lib/systemd/coredump/ directory.
     coredump.enable = true;
 
+<<<<<<< HEAD
     # If a kernel-level OOM event does occur anyway,
     # strongly prefer killing nix-daemon child processes
     # Define resource limits and OOM handling for the nix-daemon process group
@@ -83,6 +84,9 @@ in
       Slice = "nix-daemon.slice"; # Assign the service to the nix-daemon.slice
       OOMScoreAdjust = 1000;      # Set the OOM (Out of Memory) score adjustment to 1000
     };
+=======
+
+>>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
   };
 
   systemd.services = {
@@ -91,12 +95,20 @@ in
     # Idea's used from previous fedora woe's
     # ---------------------------------------------------------------------
     NetworkManager.restartIfChanged = false;
+<<<<<<< HEAD
     display-manager.restartIfChanged = false;
     libvirtd.restartIfChanged = false;
+=======
+    configure-flathub-repo.restartIfChanged = true;
+    display-manager.restartIfChanged = false;
+    libvirtd.restartIfChanged = false;
+    openssh.restartIfChanged = true;
+>>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
     polkit.restartIfChanged = false;
     systemd-logind.restartIfChanged = false;
     wpa_supplicant.restartIfChanged = false;
 
+<<<<<<< HEAD
     # lock-before-sleeping = {
     #  restartIfChanged = false;
     #  unitConfig = {
@@ -122,6 +134,8 @@ in
       enable = false;
     };
 
+=======
+>>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
     # Enables Multi-Gen LRU and sets minimum TTL for memory management
     mglru = {
       enable = true;
@@ -136,7 +150,47 @@ in
         ConditionPathExists = "/sys/kernel/mm/lru_gen/enabled";
         Description = "Configure Enable Multi-Gen LRU";
       };
+<<<<<<< HEAD
     };  
+=======
+    };
+
+    # Mount to show in nautilus or else it will remain invisible
+    bind-mount-GIMP = {
+      description = "Bind mount /home/${name}/Pictures/CUSTOM-WALLPAPERS/ to /mnt/GIMP";
+      after = [ "network.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.util-linux}/bin/mount --bind /home/${name}/Pictures/CUSTOM-WALLPAPERS/ /mnt/GIMP";
+        RemainAfterExit = true;
+      };
+      wantedBy = [ "multi-user.target" ];
+    };
+
+    # Mount to show in nautilus or else it will remain invisible
+    bind-mount-DLNA = {
+      description = "Bind mount /home/${name}/DLNA to /mnt/DLNA";
+      after = [ "network.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.util-linux}/bin/mount --bind /home/${name}/DLNA /mnt/DLNA";
+        RemainAfterExit = true;
+      };
+      wantedBy = [ "multi-user.target" ];
+    };
+
+    # Mount to show in nautilus or else it will remain invisible
+    bind-mount-MyGit = {
+      description = "Bind mount /home/${name}/MyGit to /mnt/MyGit";
+      after = [ "network.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.util-linux}/bin/mount --bind /home/${name}/MyGit /mnt/MyGit";
+        RemainAfterExit = true;
+      };
+      wantedBy = [ "multi-user.target" ];
+    };
+>>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
 
     # Disable specific systemd services
     "NetworkManager-wait-online".enable = false;  # Disable the NetworkManager-wait-online service
@@ -163,7 +217,10 @@ in
       '';
     };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
     # Modify autoconnect priority of the connection to tolgas home network
     modify-autoconnect-priority = {
       description = "Modify autoconnect priority of OPTUS_B27161 connection";
@@ -296,4 +353,8 @@ in
       '';
     };
   };
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)

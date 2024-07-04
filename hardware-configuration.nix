@@ -8,7 +8,7 @@
   modulesPath,
   ...
 }:
-
+with lib;
 let
   name = "tolga";
   extraBackends = [ pkgs.epkowa ];
@@ -17,19 +17,21 @@ in
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-
   boot = {
-    blacklistedKernelModules = lib.mkDefault [ "nouveau" ];
-    # initrd.kernelModules = [ "nvidia" ];
+    blacklistedKernelModules = lib.mkDefault [ "nouveau" ];    
 
     kernelModules = [
-      "kvm-intel"
+      "kvm-intel"     # KVM on Intel CPUs
+      "coretemp"      # Temperature monitoring on Intel CPUs
+      "fuse"          # userspace filesystem framework.
+      "i2c-dev"       # An acronym for the “Inter-IC” bus, a simple bus protocol which is widely used where low data rate communications suffice.
+      "i2c-piix4"
       "nvidia"
-      "tcp_cubic" # Cubic: A traditional and widely used congestion control algorithm
-      "tcp_reno" # Reno: Another widely used and stable algorithm
-      "tcp_newreno" # New Reno: An extension of the Reno algorithm with some improvements
-      "tcp_bbr" # BBR: Dynamically optimize how data is sent over a network, aiming for higher throughput and reduced latency
-      "tcp_westwood" # Westwood: Particularly effective in wireless networks
+      "tcp_cubic"     # Cubic: A traditional and widely used congestion control algorithm
+      "tcp_reno"      # Reno: Another widely used and stable algorithm
+      "tcp_newreno"   # New Reno: An extension of the Reno algorithm with some improvements
+      "tcp_bbr"       # BBR: Dynamically optimize how data is sent over a network, aiming for higher throughput and reduced latency
+      "tcp_westwood"  # Westwood: Particularly effective in wireless networks
     ];
 
     extraModprobeConfig = lib.mkMerge [
@@ -39,56 +41,80 @@ in
 
     kernel.sysctl = {
       "kernel.panic" = "60";
-      "kernel.pty.max" = 24000; # Sets the maximum number of pseudo-terminal (pty) devices.
-      "kernel.sysrq" = 1; # Enables the SysRq key, which can be used for various low-level system commands.
+      "kernel.pty.max" = 24000;                       # Sets the maximum number of pseudo-terminal (pty) devices.
+      "kernel.sysrq" = 1;                             # Enables the SysRq key, which can be used for various low-level system commands.
       "net.ipv4.tcp_congestion_control" = "westwood"; # Sets the TCP congestion control algorithm to Westwood for IPv4 in the Linux kernel.
-      "vm.dirty_background_bytes" = 268435456; # Sets the amount of dirty memory at which background writeback starts (256 MB).
-      "vm.dirty_bytes" = 536870912; # Sets the amount of dirty memory at which a process generating dirty memory will itself start writeback (512 MB).
-      "vm.dirty_ratio" = "25"; # 25% of all memory optionally as write cache
+      "vm.dirty_background_bytes" = 268435456;        # Sets the amount of dirty memory at which background writeback starts (256 MB).
+      "vm.dirty_bytes" = 536870912;                   # Sets the amount of dirty memory at which a process generating dirty memory will itself start writeback (512 MB).
+      "vm.dirty_ratio" = "25";                        # 25% of all memory optionally as write cache
       "vm.max_map_count" = 1000000;
-      "vm.swappiness" = 10; # Reduces the tendency of the kernel to swap out inactive memory pages.
-      "vm.vfs_cache_pressure" = 50; # Controls the tendency of the kernel to reclaim the memory which is used for caching of directory and inode objects.
+      "vm.swappiness" = 10;                           # Reduces the tendency of the kernel to swap out inactive memory pages.
+      "vm.vfs_cache_pressure" = 50;                   # Controls the tendency of the kernel to reclaim the memory which is used for caching of directory and inode objects.
       # "net.core.default_qdisc" = "cake";            # Sets the default queuing discipline (qdisc) for network interfaces to CAKE for improved network fairness and latency.
-      # "vm.page-cluster" = 1;                        # Controls the number of pages read in a single attempt, impacting swap read-ahead. 
+      # "vm.page-cluster" = 1;                        # Controls the number of pages read in a single attempt, impacting swap read-ahead.
     };
 
     kernelParams = [
+      "elevator=kyber"              # Change IO scheduler to Kyber
       "fbcon=nodefer"               # prevent the kernel from blanking plymouth out of the fb
+      "intel_iommu=on"              # Enable IOMMU
+      "io_delay=none"               # Disable I/O delay accounting
+      "iomem=relaxed"               # Allow more relaxed I/O memory access
+      "iommu=pt"
+      "irqaffinity=0-7"             # Set IRQ affinity to CPUs 0-3 (Intel Core i7-3667U specific)
+      "loglevel=3"                  # Set kernel log level to 3 (default)
       "logo.nologo"                 # disable boot logo if any
       "mitigations=off"             # turns off certain CPU security mitigations. It might enhance performance
+      "noirqdebug"                  # Disable IRQ debugging
       "nvidia_drm.fbdev=1"          # Enables the use of a framebuffer device for NVIDIA graphics. This can be useful for certain configurations.
       "nvidia_drm.modeset=1"        # Enables kernel modesetting for NVIDIA graphics. This is essential for proper graphics support on NVIDIA GPUs.
+      "pti=off"                     # Disable Kernel Page Table Isolation (PTI)
       "quiet"                       # suppresses most boot messages during the system startup
-      "rd.systemd.show_status=auto" # disable systemd status messages
+      "rd.systemd.show_status=false" # Disable systemd boot status display
       "rd.udev.log_level=3"         # lower the udev log level to show only errors or worse
+      "rootdelay=0"                 # No delay when mounting root filesystem
+      "splash"                      # Enable graphical boot splash screen
+      "threadirqs"                  # Enable threaded interrupt handling
       "udev.log_level=3"            # Sets the overall udev log level to 3, displaying informational messages.
       "video.allow_duplicates=1"    # allows duplicate frames or similar, help smoothen video playback, especially on systems that struggle with rendering every single frame due to hardware limitations.
-      # Isolating CPUs can potentially improve performance by dedicating them solely to the workload you want to optimize      
-      # "isolcpus=1-7"                  # isolates CPUs 1 to 7 from the general system scheduler, often used for dedicated processing to prevent interference from unrelated tasks
-      # "nohz_full=1-7"                 # isolates CPUs 1 to 7 from the tickless idle scheduler, which could potentially improve performance on those cores by reducing interruptions from timer ticks
-      # "rcu_nocbs=1-7"                 # designates CPUs 1 to 7 for RCU (Read-Copy Update) processing, isolating them from other system tasks to enhance performance
+      "vt.global_cursor_default=0"  # Disable blinking cursor in text mode
       # "intel_pstate=disable"          # Disabling the Intel P-state driver, which manages the CPU frequency scaling in some Intel processors
+      # "isolcpus=0-7"                  # isolates CPUs 1 to 7 from the general system scheduler, often used for dedicated processing to prevent interference from unrelated tasks
+      # "nohz_full=0-7"                 # isolates CPUs 1 to 7 from the tickless idle scheduler, which could potentially improve performance on those cores by reducing interruptions from timer ticks
+      # "rcu_nocbs=0-7"                 # designates CPUs 1 to 7 for RCU (Read-Copy Update) processing, isolating them from other system tasks to enhance performance
+      # "systemd.show_status=auto"      # Commented out, not used in this configuration
+      # "rd.systemd.show_status=auto"   # disable systemd status messages
+    ];
+
+    initrd.kernelModules = [
+      "cifs"          #  implementation of the Server Message Block (SMB) protocol, is used to share file systems, printers, or serial ports over a network.
+      # "nvidia"
+      # "dm-snapshot" #  a read-only copy of the entire file system and all the files contained in the file system.
     ];
 
     initrd.availableKernelModules = [
-      "nvidia"
       "ahci"        # Enables the Advanced Host Controller Interface (AHCI) driver, typically used for SATA (Serial ATA) controllers.
       "ehci_pci"    # Enables the Enhanced Host Controller Interface (EHCI) driver for PCI-based USB controllers, providing support for USB 2.0.
+      "nvidia"
       "nvme"        # module in your initrd configuration can be useful if you plan to use an NVMe drive in the future
       "sd_mod"      # Enables the SCSI disk module (sd_mod), which allows the system to recognize and interact with SCSI-based storage devices.
       "sr_mod"      # Loads the SCSI (Small Computer System Interface) CD/DVD-ROM driver, allowing the system to recognize and use optical drives.
       "uas"         # Enables the USB Attached SCSI (UAS) driver, which provides a faster and more efficient way to access USB storage devices.
       "usb_storage" # Enables the USB Mass Storage driver, allowing the system to recognize and use USB storage devices like USB flash drives and external hard drives.
       "usbhid"      # Enables the USB Human Interface Device (HID) driver, which provides support for USB input devices such as keyboards and mice.
+      "virtio_blk"  # Another Virtio module, enabling high-performance communication between the host and virtualized block devices (e.g., hard drives) in a virtualized environment.
+      "virtio_pci"  # Part of Virtio virtualization standard, it supports efficient communication between the host and virtual machines with PCI bus devices.
       "xhci_pci"    # Enables the eXtensible Host Controller Interface (xHCI) driver for PCI-based USB controllers, providing support for USB 3.0 and later standards.
     ];
 
     extraModulePackages = with config.boot.kernelPackages; [ ];
+
+    supportedFilesystems = ["ntfs" "ntfs3"];
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/719a312c-c04e-443a-81cc-15e6546c1f49";
-    fsType = "ext4";
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/c9cff38c-35a9-4a1a-9762-b052263a3183";
+      fsType = "ext4";
 
     # Optimize SSD
     # ---------------------------------------------
@@ -96,42 +122,20 @@ in
       "data=ordered"      # Ensures data ordering, improving file system reliability and performance by writing data to disk in a specific order.
       "defaults"          # Applies the default options for mounting, which usually include common settings for permissions, ownership, and read/write access.
       "discard"           # Enables the TRIM command, which allows the file system to notify the storage device of unused blocks, improving performance and longevity of solid-state drives (SSDs).
-      "errors=remount-ro" # Remounts the file system as read-only (ro) in case of errors to prevent further potential data corruption.
       "noatime"           # Disables updating access times for files, improving file system performance by reducing write operations.
       "nodiratime"        # Disables updating directory access time, improving file system performance by reducing unnecessary writes.
       "relatime"          # Updates the access time of files relative to the modification time, minimizing the performance impact compared to atime
-      # "discard=async"     # Helps maintain the SSD's performance over time by reducing write amplification and improving block management
     ];
   };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/FE0E-2371";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
-  };
 
-  # Add a file system entry for the "DLNA" directory bind mount
-  fileSystems."/mnt/DLNA" = {
-    device = "/home/${name}/DLNA";
-    fsType = "none";
-    options = [
-      "bind"
-      "rw"
-    ]; # Read-write access
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/7D4E-CBD5";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
 
-  # Add a file system entry for the "MyGit" directory bind mount
-  fileSystems."/mnt/MyGit" = {
-    device = "/home/${name}/MyGit";
-    fsType = "none";
-    options = [
-      "bind"
-      "rw"
-    ]; # Read-write access
-  };
+
 
   powerManagement = {
     cpuFreqGovernor = lib.mkDefault "performance";
@@ -151,14 +155,18 @@ in
   };
 
   swapDevices = [ ];
+
   networking = {
     useDHCP = lib.mkDefault true;
     # interfaces.enp0s25.useDHCP = lib.mkDefault true;
     # interfaces.wlo1.useDHCP = lib.mkDefault true;
   };
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  # Allow unfree packages
+  nixpkgs = {
+    config.allowUnfree = true;
+    hostPlatform = lib.mkDefault "x86_64-linux";
+  };
 
   #---------------------------------------------------------------------
   # Hardware Configuration

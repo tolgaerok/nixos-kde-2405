@@ -1,18 +1,18 @@
 # Tolga Erok
-# 10/6/2023
-# My personal NIXOS KDE configuration
-#
+# Tue Jul 2, 2024
+# My personal NIXOS KDE configuration 
+# 
 #              ¯\_(ツ)_/¯
-#   ███▄    █     ██▓   ▒██   ██▒    ▒█████       ██████
-#   ██ ▀█   █    ▓██▒   ▒▒ █ █ ▒░   ▒██▒  ██▒   ▒██    ▒
-#  ▓██  ▀█ ██▒   ▒██▒   ░░  █   ░   ▒██░  ██▒   ░ ▓██▄
+#   ███▄    █     ██▓   ▒██   ██▒    ▒█████       ██████ 
+#   ██ ▀█   █    ▓██▒   ▒▒ █ █ ▒░   ▒██▒  ██▒   ▒██    ▒ 
+#  ▓██  ▀█ ██▒   ▒██▒   ░░  █   ░   ▒██░  ██▒   ░ ▓██▄   
 #  ▓██▒  ▐▌██▒   ░██░    ░ █ █ ▒    ▒██   ██░     ▒   ██▒
 #  ▒██░   ▓██░   ░██░   ▒██▒ ▒██▒   ░ ████▓▒░   ▒██████▒▒
 #  ░ ▒░   ▒ ▒    ░▓     ▒▒ ░ ░▓ ░   ░ ▒░▒░▒░    ▒ ▒▓▒ ▒ ░
 #  ░ ░░   ░ ▒░    ▒ ░   ░░   ░▒ ░     ░ ▒ ▒░    ░ ░▒  ░ ░
-#     ░   ░ ░     ▒ ░    ░    ░     ░ ░ ░ ▒     ░  ░  ░
-#           ░     ░      ░    ░         ░ ░           ░
-#
+#     ░   ░ ░     ▒ ░    ░    ░     ░ ░ ░ ▒     ░  ░  ░  
+#           ░     ░      ░    ░         ░ ░           ░  
+#  
 #------------------ HP EliteDesk 800 G1 SFF ------------------------
 
 # BLUE-TOOTH        REALTEK 5G
@@ -36,7 +36,6 @@
   config,
   pkgs,
   lib,
-  username,
   ...
 }:
 
@@ -55,60 +54,61 @@ in
 
 {
   imports = [
-
+    # Include the results of the hardware scan.
+    ./DE/gnome46.nix
     ./cachix.nix
     ./core/boot/efi/efi.nix
     ./core/gpu/nvidia/nvidia-stable-opengl # NVIDIA with hardware acceleration (Open-GL) for GT-1030++
     ./core/modules
     ./core/packages
     ./core/programs
+    ./core/security
     ./core/services/services.nix
     ./core/system
     ./hardware-configuration.nix
     ./network
-  ];
+  ]; 
 
   #---------------------------------------------------------------------
   # Custom kernel selection from user
   #---------------------------------------------------------------------
   boot.kernelPackages = latest-std-kernel;
 
-  # -----------------------------------------------
-  # Enables simultaneous use of processor threads.
-  # -----------------------------------------------
-  security = {
-    allowSimultaneousMultithreading = true; # Allow simultaneous multithreading (SMT).
-    rtkit.enable = true; # Enable RealtimeKit (rtkit) for managing real-time priorities.
-  };
+  #---------------------------------------------------------------------
+  # Ozone-Wayland backend when running in a Wayland session. 
+  # This improves performance and compatibility, making your experience 
+  # smoother and more integrated with the Wayland compositor you are using.
+  #---------------------------------------------------------------------
 
-  ###---------- Nvidia session ----------###
+  ###---------- Intel / Nvidia session ----------###
   environment.variables = {
-    # XDG_CURRENT_DESKTOP = "wayland";      # Sets the current desktop environment to Wayland.
-    # XDG_SESSION_TYPE = "wayland";         # Defines the session type as Wayland.
-    CLUTTER_BACKEND = "wayland";                # Specifies Wayland as the backend for Clutter.
-    LIBVA_DRIVER_NAME = "nvidia";                   
-    MOZ_ENABLE_WAYLAND = "1";                   # Enables Wayland support in Mozilla applications (e.g., Firefox).
-    NIXOS_OZONE_WL = "1";                       # Enables the Ozone Wayland backend for Chromium-based browsers.
-    NIXPKGS_ALLOW_UNFREE = "1";                 # Allows the installation of packages with unfree licenses in Nixpkgs.
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";  # Disables window decorations in Qt applications when using Wayland.
-    SDL_VIDEODRIVER = "wayland";                # Sets the video driver for SDL applications to Wayland.
-    WLR_NO_HARDWARE_CURSORS = "1";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";       # Specifies the GLX vendor library to use, ensuring Mesa's library is used    
-    __GL_SHADER_CACHE = "1";
-    __GL_THREADED_OPTIMIZATION = "1";
-  };
+    # Wayland-related settings (commented out)
+    # XDG_CURRENT_DESKTOP = "wayland";        # Sets the current desktop environment to Wayland.
+    # XDG_SESSION_TYPE = "wayland";           # Defines the session type as Wayland.
+    # __GLX_VENDOR_LIBRARY_NAME = "mesa";     # Specifies the GLX vendor library to use, ensuring Mesa's library is used.
+    # CLUTTER_BACKEND = "wayland";            # Specifies Wayland as the backend for Clutter.
+    # LIBVA_DRIVER_NAME = "i965";             # Force Intel i965 driver.
+    # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"; # Disables window decorations in Qt applications when using Wayland.
+    # SDL_VIDEODRIVER = "wayland";            # Sets the video driver for SDL applications to Wayland.
 
+    # Other settings
+    MOZ_ENABLE_WAYLAND = "1";                  # Enables Wayland support in Mozilla applications (e.g., Firefox).
+    NIXOS_OZONE_WL = "1";                      # Enables the Ozone Wayland backend for Chromium-based browsers.
+    NIXPKGS_ALLOW_UNFREE = "1";                # Allows the installation of packages with unfree licenses in Nixpkgs.
+
+    # X11-related settings
+    # XDG_SESSION_TYPE = "x11";                  # Defines the session type as X11.
+    # XDG_SESSION_CLASS = "user";                # Sets the session class to 'user'.
+    # GDK_BACKEND = "x11";                       # Specifies X11 as the backend for GDK.
+    # LIBGL_ALWAYS_SOFTWARE = "1";               # Forces the use of software rendering for OpenGL.
+  };  
+  
   #---------------------------------------------------------------------
   # Networking
   #---------------------------------------------------------------------
   networking = {
     networkmanager = {
-      enable = true;
-      # wifi.powersave = true; # Enable power-saving mode for Wi-Fi.
-      connectionConfig = {
-        "ethernet.mtu" = 1462; # Set MTU for Ethernet connections.
-        "wifi.mtu" = 1462; # Set MTU for Wi-Fi connections.
-      };
+      enable = true;      
     };
     hostName = "${hostname}"; # Set the hostname for the system.
     firewall.allowedTCPPorts = [ 22 ]; # Allow incoming TCP traffic on port 22 (SSH).
@@ -134,32 +134,6 @@ in
     LC_PAPER = "${locale}";
     LC_TELEPHONE = "${locale}";
     LC_TIME = "${locale}";
-  };
-
-  # Enable the X11 windowing system.
-  services = {
-    xserver = {
-      enable = true;
-
-      # Configure keymap in X11
-      xkb.layout = "au";
-      xkb.variant = "";
-    };
-
-    # Enable the KDE Plasma Desktop Environment.
-    displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
-
-    # Enable CUPS to print documents.
-    printing.enable = true;
-
-    # Enable Pipewire with ALSA and PulseAudio support.
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
   };
 
   #---------------------------------------------------------------------
@@ -218,6 +192,8 @@ in
         acpi
         bcachefs-tools
         clementine
+        cpufrequtils
+        cpupower-gui
         duf
         ethtool
         flameshot
@@ -228,40 +204,49 @@ in
         gnome.gvfs
         gnome.rygel
         gupnp-tools # UPNP tools USAGE: gupnp-universal-cp
-        kate
+        kdePackages.kate
         keyutils
         libnotify
+        libsForQt5.qt5.qtgraphicaleffects
+        libsForQt5.qt5.qtquickcontrols2
         libwps
         lolcat
+        megasync
         mesa
         neofetch
         nix-prefetch-git
         notify
         notify-desktop
-        variety
-        wpsoffice
-        zstd
-
-        kdePackages.kate
-
-        # Development
-        direnv
-        nixfmt-rfc-style
-        vscode
-        vscode-extensions.brettm12345.nixfmt-vscode
-
-        # MegaSync related
-        megasync
-
-        # Extra laptop packages
-        acpi
-        cpufrequtils
-        cpupower-gui
-        ethtool
+        polkit
+        polkit_gnome        
         powerstat
         powertop
         sutils
         tlp
+        variety
+        wpsoffice
+        zstd
+
+        # Gnome related / extensions
+        gnome-extension-manager
+        gnome-usage
+        gnome.dconf-editor
+        gnome.gnome-disk-utility
+        gnome.gnome-software
+        gnome.gnome-tweaks
+        gnome.simple-scan
+        gnomeExtensions.appindicator
+        gnomeExtensions.dash-to-dock
+        gnomeExtensions.just-perfection
+        gnomeExtensions.logo-menu
+        gnomeExtensions.wifi-qrcode
+        gnomeExtensions.wireless-hid
+
+        # Development 
+        direnv
+        nixfmt-rfc-style
+        vscode
+        vscode-extensions.brettm12345.nixfmt-vscode
       ];
 
       openssh = {
@@ -269,24 +254,26 @@ in
           keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGg5V+YAm36cZcZBZz1fv7+0kP05DpoGs1EhcrlI09i kingtolga@gmail.com"
           ];
-          keyFiles = [
-            /home/${name}/.ssh/id_ed25519.pub
-          ];
+          keyFiles = [ /home/${name}/.ssh/id_ed25519.pub ];
         };
       };
     };
   };
 
+  #---------------------------------------------------------------------
+  # Audio settings
+  #---------------------------------------------------------------------
+
+  # Enable sound with pipewire.
+  sound.enable = true;
+
   # Enable UPNP for gupnp-tools # UPNP tools USAGE: gupnp-universal-cp
   programs = {
+    firefox.enable = true;
     gnupg.agent.enable = true; # Enable the GnuPG agent service for managing GPG keys.
     mtr.enable = true; # Enable the MTR (My Traceroute) network diagnostic tool.
     ssh.startAgent = true; # Enable the SSH agent for managing SSH keys.
-    firefox.enable = true;
   };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   #---------------------------------------------------------------------
   # Automatic system upgrades, automatically reboot after an upgrade if
