@@ -60,7 +60,7 @@ in
       "intel_iommu=on"              # Enable IOMMU
       "io_delay=none"               # Disable I/O delay accounting
       "iomem=relaxed"               # Allow more relaxed I/O memory access
-      "iommu=pt"
+      "iommu=pt"                    # Allow pass-through to vm
       "irqaffinity=0-7"             # Set IRQ affinity to CPUs 0-3 (Intel Core i7-3667U specific)
       "loglevel=3"                  # Set kernel log level to 3 (default)
       "logo.nologo"                 # disable boot logo if any
@@ -128,14 +128,11 @@ in
     ];
   };
 
-
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/7D4E-CBD5";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
-
-
 
   powerManagement = {
     cpuFreqGovernor = lib.mkDefault "performance";
