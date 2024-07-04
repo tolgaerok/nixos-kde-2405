@@ -1,11 +1,7 @@
 { pkgs, inputs, ... }:
 
 {
-<<<<<<< HEAD
-  # FireFox program settings
-=======
  # FireFox program settings
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
 
   programs = {
     firefox = {
@@ -13,11 +9,7 @@
       # profiles.default = {
       policies = {
         CaptivePortal = false;
-<<<<<<< HEAD
-        DisableFirefoxAccounts = false;
-=======
         DisableFirefoxAccounts = true;
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
         DisableFirefoxStudies = true;
         DisablePocket = true;
         DisableTelemetry = true;
@@ -34,22 +26,6 @@
         };
 
         UserMessaging = {
-<<<<<<< HEAD
-          ExtensionRecommendations = true;
-          SkipOnboarding = true;
-        };
-
-        search.force = true;
-
-        bookmarks = [
-          {
-            name = "wikipedia";
-            tags = [ "wiki" ];
-            keyword = "wiki";
-            url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
-          }
-        ];
-=======
           ExtensionRecommendations = false;
           SkipOnboarding = true;
         };
@@ -84,7 +60,6 @@
           keyword = "wiki";
           url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
         }];
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
 
         settings = {
 
@@ -93,13 +68,8 @@
           "general.smoothScroll" = true;
           "gfx.webrender.enabled" = true;
           "layout.css.backdrop-filter.enabled" = true;
-<<<<<<< HEAD
-          "media.videocontrols.picture-in-picture.video-toggle.enabled" = true;
-          "signon.rememberSignons" = true;
-=======
           "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
           "signon.rememberSignons" = false;
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
           "svg.context-properties.content.enabled" = true;
 
           # We handle this elsewhere
@@ -124,12 +94,8 @@
           "plugins.enumerable_names" = "";
 
           # Use Mozilla instead of Google here.
-<<<<<<< HEAD
-          # "geo.provider.network.url" = "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
-=======
           "geo.provider.network.url" =
             "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
 
           # No speculative content when searching.
           "browser.urlbar.speculativeConnect.enabled" = false;
@@ -140,13 +106,8 @@
           "browser.send_pings" = false;
 
           "browser.tabs.closeWindowWithLastTab" = false;
-<<<<<<< HEAD
-          #"browser.urlbar.placeholderName" = "DuckDuckGo";
-          #"browser.search.defaultenginename" = "DuckDuckGo";
-=======
           "browser.urlbar.placeholderName" = "DuckDuckGo";
           "browser.search.defaultenginename" = "DuckDuckGo";
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
 
           # Safe browsing
           "browser.safebrowsing.enabled" = false;
@@ -217,9 +178,6 @@
           "layers.offmainthreadcomposition.async-animations" = true;
           "layers.async-video.enabled" = true;
           "html5.offmainthread" = true;
-<<<<<<< HEAD
-        };
-=======
 
           
 
@@ -231,16 +189,12 @@
         # modified theme from https://github.com/Bali10050/FirefoxCSS
         # userChrome = builtins.readFile ./userChrome.css;
         # userContent = builtins.readFile ./userContent.css;
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
       };
     };
     # };
   };
 
   #nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
-<<<<<<< HEAD
-}
-=======
 
 }
 # NOTE: 
@@ -260,4 +214,3 @@
 #     userContent.css 
 #       in there
 #   Restart Firefox
->>>>>>> 0fce02f ((ツ)_/¯ Edit: 03-07-2024 11:52:51 PM)
