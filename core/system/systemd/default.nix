@@ -135,7 +135,7 @@ in
     "NetworkManager-wait-online".enable = false;  # Disable the NetworkManager-wait-online service
     "autovt@tty1".enable = false;                 # Disable the autovt@tty1 service
     "getty@tty1".enable = false;                  # Disable the getty@tty1 service
-    "systemd-udev-settle".enable = true;         # Disable the systemd-udev-settle service
+    "systemd-udev-settle".enable = true;          # Enable the systemd-udev-settle service or Disable to decrease boot time
 
     # Configure the flathub remote
     configure-flathub-repo = {
