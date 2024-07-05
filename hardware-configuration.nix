@@ -35,8 +35,9 @@ in
       #"tcp_reno"      # Reno: Another widely used and stable algorithm
     ];
 
+    # intel_idle.max_cstate=0
     extraModprobeConfig = ''
-      intel_idle.max_cstate=0
+      
     '';
 
     kernel.sysctl = {
@@ -80,6 +81,7 @@ in
       "udev.log_level=3"            # Sets the overall udev log level to 3, displaying informational messages.
       "video.allow_duplicates=1"    # allows duplicate frames or similar, help smoothen video playback, especially on systems that struggle with rendering every single frame due to hardware limitations.
       "vt.global_cursor_default=0"  # Disable blinking cursor in text mode
+      "nmi_watchdog=0"
       # "intel_pstate=disable"          # Disabling the Intel P-state driver, which manages the CPU frequency scaling in some Intel processors
       # "isolcpus=0-7"                  # isolates CPUs 1 to 7 from the general system scheduler, often used for dedicated processing to prevent interference from unrelated tasks
       # "nohz_full=0-7"                 # isolates CPUs 1 to 7 from the tickless idle scheduler, which could potentially improve performance on those cores by reducing interruptions from timer ticks
@@ -137,7 +139,7 @@ in
 
   powerManagement = {
     cpuFreqGovernor = lib.mkDefault "performance";
-
+    
     #---------------------------------------------------------------------------
     # Disable hid driver (gyro/accel) while sleeping for extra power-saving
     #---------------------------------------------------------------------------

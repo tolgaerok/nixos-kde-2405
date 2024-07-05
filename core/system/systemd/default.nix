@@ -34,9 +34,17 @@ in
 # ---------------------------------------------------------------------
 
 {
-  imports = [
-    # ./tmpfs-mount.service
-  ];  
+  imports = [    
+  ]; 
+
+  # Ensure util-linux is available for mount command
+  environment.systemPackages = with pkgs; [
+    cifs-utils
+    nfs-utils 
+    util-linux 
+  ];
+
+  services.rpcbind.enable = true; # needed for NFS
 
   # ---------------------------------------------------------------------
   # Add a systemd tmpfiles rule that creates a directory /var/spool/samba 
@@ -59,10 +67,9 @@ in
       DefaultTimeoutStopSec=10s
     '';
 
-
     # When a program crashes, systemd will create a core dump file, typically in the /var/lib/systemd/coredump/ directory.
     coredump.enable = true;
-
+      
   };
 
   systemd.services = {
@@ -79,6 +86,18 @@ in
     systemd-logind.restartIfChanged = false;
     wpa_supplicant.restartIfChanged = false;
 
+    # Add a systemd service to fix SSH host key permissions
+    fix-ssh-permissions = {
+    description = "Fix SSH Host Key Permissions";
+    wantedBy = [ "sshd.service" ];
+    before = [ "sshd.service" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.bash}/bin/bash -c 'chmod 600 /etc/ssh/ssh_host_*_key && chown root:root /etc/ssh/ssh_host_*_key'";
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+    };
+
     # Enables Multi-Gen LRU and sets minimum TTL for memory management
     mglru = {
       enable = true;
@@ -94,6 +113,18 @@ in
         Description = "Configure Enable Multi-Gen LRU";
       };
     };
+
+    # Mount to show in nautilus or else it will remain invisible
+    #bind-mount-QNAP = {
+    #  description = "";
+    #  after = [ "network.target" ];
+    #  serviceConfig = {
+    #    Type = "oneshot";
+    #    ExecStart = "${pkgs.util-linux}/bin/mount --bind /home/${name}/QNAP/ /mnt/QNAP";
+    #    RemainAfterExit = true;
+    #  };
+    #  wantedBy = [ "multi-user.target" ];
+    #}; 
 
     # Mount to show in nautilus or else it will remain invisible
     bind-mount-GIMP = {

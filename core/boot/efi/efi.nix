@@ -12,6 +12,8 @@ in
     # Intialise tmpfs parameters.
     ../tmpfs/tmpfs.nix
     ../numlock
+    ../binds
+    ../mounts
   ];
 
   # Various plymouth themes
