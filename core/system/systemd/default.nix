@@ -70,7 +70,7 @@ in
     # Do not restart these, since it messes up the current session
     # Idea's used from previous fedora woe's
     # ---------------------------------------------------------------------
-    NetworkManager.restartIfChanged = false;
+    NetworkManager.restartIfChanged = true;
     configure-flathub-repo.restartIfChanged = true;
     display-manager.restartIfChanged = false;
     libvirtd.restartIfChanged = false;
@@ -135,7 +135,7 @@ in
     "NetworkManager-wait-online".enable = false;  # Disable the NetworkManager-wait-online service
     "autovt@tty1".enable = false;                 # Disable the autovt@tty1 service
     "getty@tty1".enable = false;                  # Disable the getty@tty1 service
-    "systemd-udev-settle".enable = false;         # Disable the systemd-udev-settle service
+    "systemd-udev-settle".enable = true;         # Disable the systemd-udev-settle service
 
     # Configure the flathub remote
     configure-flathub-repo = {

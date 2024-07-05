@@ -69,7 +69,7 @@
     # When (if!) I get another nvidia GPU, check for resizeable bar
     # settings
     # Set temporary file path
-    "NVreg_TemporaryFilePath=/var/tmp"
+    "NVreg_TemporaryFilePath=/tmp"
     # Preserve video memory allocations across modesets and VT switches
     "NVreg_PreserveVideoMemoryAllocations=1"
   ];

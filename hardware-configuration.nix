@@ -27,15 +27,16 @@ in
       "i2c-dev"       # An acronym for the “Inter-IC” bus, a simple bus protocol which is widely used where low data rate communications suffice.
       "i2c-piix4"
       "nvidia"
-      "tcp_cubic"     # Cubic: A traditional and widely used congestion control algorithm
-      "tcp_reno"      # Reno: Another widely used and stable algorithm
-      "tcp_newreno"   # New Reno: An extension of the Reno algorithm with some improvements
       "tcp_bbr"       # BBR: Dynamically optimize how data is sent over a network, aiming for higher throughput and reduced latency
+      "tcp_cubic"     # Cubic: A traditional and widely used congestion control algorithm
       "tcp_westwood"  # Westwood: Particularly effective in wireless networks
+      #"intel_idle"
+      #"tcp_newreno"   # New Reno: An extension of the Reno algorithm with some improvements
+      #"tcp_reno"      # Reno: Another widely used and stable algorithm
     ];
 
     extraModprobeConfig = ''
-      options intel_idle max_cstate=0
+      intel_idle.max_cstate=0
     '';
 
     kernel.sysctl = {

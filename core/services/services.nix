@@ -69,13 +69,15 @@ in
 
       # Extra udev rules for various hardware configurations
       extraRules = ''
+        # ACTION=="add|change", SUBSYSTEM=="bdi", ATTR{min_ratio}="2", ATTR{max_ratio}="50", RUN+="udevadm trigger"
         ACTION=="add|change", SUBSYSTEM=="bdi", ATTR{min_ratio}="2", ATTR{max_ratio}="50"
         
         # Disable Ethernet Wake-on-LAN
         #ACTION=="add", SUBSYSTEM=="net", NAME=="enp*", RUN+="${pkgs.ethtool}/sbin/ethtool -s \$name wol d"
 
         # Disable serial ports ttyS1 to ttyS3
-        KERNEL=="ttyS[1-3]", SUBSYSTEM=="tty", ACTION=="add", ATTR{enabled}="0"
+        KERNEL=="ttyS[1-3]", SUBSYSTEM=="tty", ACTION=="add", ATTR{power/control}="auto", ATTR{power/runtime_enabled}="disabled"
+
 
         # Autosuspend PCI devices
         #ACTION=="add", SUBSYSTEM=="pci", TEST=="power/control", ATTR{power/control}="auto"
