@@ -205,6 +205,8 @@ in
         gnome.rygel
         gupnp-tools # UPNP tools USAGE: gupnp-universal-cp
         kdePackages.kate
+        libsForQt5.spectacle
+        kdePackages.spectacle
         keyutils
         libnotify
         libsForQt5.qt5.qtgraphicaleffects
