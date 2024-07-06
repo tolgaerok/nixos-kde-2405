@@ -112,19 +112,7 @@ in
         ConditionPathExists = "/sys/kernel/mm/lru_gen/enabled";
         Description = "Configure Enable Multi-Gen LRU";
       };
-    };
-
-    # Mount to show in nautilus or else it will remain invisible
-    #bind-mount-QNAP = {
-    #  description = "";
-    #  after = [ "network.target" ];
-    #  serviceConfig = {
-    #    Type = "oneshot";
-    #    ExecStart = "${pkgs.util-linux}/bin/mount --bind /home/${name}/QNAP/ /mnt/QNAP";
-    #    RemainAfterExit = true;
-    #  };
-    #  wantedBy = [ "multi-user.target" ];
-    #}; 
+    };   
 
     # Mount to show in nautilus or else it will remain invisible
     bind-mount-GIMP = {
