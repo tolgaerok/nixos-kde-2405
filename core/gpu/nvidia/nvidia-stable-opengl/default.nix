@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 # NVIDIA-GPU related
 
@@ -8,7 +13,6 @@
     ../../openGL/opengl.nix
     ../included/cachix.nix
     ./vaapi.nix
-
   ];
 
   # ++ (myLib.filesIn ./included);
@@ -54,25 +58,27 @@
     };
   };
 
-  boot.extraModprobeConfig = "options nvidia " + lib.concatStringsSep " " [
-    # nvidia assume that by default your CPU does not support PAT,
-    # but this is effectively never the case in 2023
-    "NVreg_UsePageAttributeTable=1"
-    # This may be a noop, but it's somewhat uncertain
-    "NVreg_EnablePCIeGen3=1"
-    # This is sometimes needed for ddc/ci support, see
-    # https://www.ddcutil.com/nvidia/
-    #
-    # Current monitor does not support it, but this is useful for
-    # the future
-    "NVreg_RegistryDwords=RMUseSwI2c=0x01;RMI2cSpeed=100"
-    # When (if!) I get another nvidia GPU, check for resizeable bar
-    # settings
-    # Set temporary file path
-    "NVreg_TemporaryFilePath=/tmp"
-    # Preserve video memory allocations across modesets and VT switches
-    "NVreg_PreserveVideoMemoryAllocations=1"
-  ];
+  boot.extraModprobeConfig =
+    "options nvidia "
+    + lib.concatStringsSep " " [
+      # nvidia assume that by default your CPU does not support PAT,
+      # but this is effectively never the case in 2023
+      "NVreg_UsePageAttributeTable=1"
+      # This may be a noop, but it's somewhat uncertain
+      "NVreg_EnablePCIeGen3=1"
+      # This is sometimes needed for ddc/ci support, see
+      # https://www.ddcutil.com/nvidia/
+      #
+      # Current monitor does not support it, but this is useful for
+      # the future
+      "NVreg_RegistryDwords=RMUseSwI2c=0x01;RMI2cSpeed=100"
+      # When (if!) I get another nvidia GPU, check for resizeable bar
+      # settings
+      # Set temporary file path
+      "NVreg_TemporaryFilePath=/tmp"
+      # Preserve video memory allocations across modesets and VT switches
+      "NVreg_PreserveVideoMemoryAllocations=1"
+    ];
 
   # Replace a glFlush() with a glFinish() - this prevents stuttering
   # and glitching in all kinds of circumstances for the moment.
@@ -83,8 +89,9 @@
   # staying.
   nixpkgs.overlays = [
     (_: final: {
-      wlroots_0_16 = final.wlroots_0_16.overrideAttrs
-        (_: { patches = [ ./wlroots-nvidia.patch ]; });
+      wlroots_0_16 = final.wlroots_0_16.overrideAttrs (_: {
+        patches = [ ./wlroots-nvidia.patch ];
+      });
     })
   ];
 
@@ -105,6 +112,13 @@
 
   # Specify the Nvidia video driver for Xorg
   services.xserver.videoDrivers = [ "nvidia" ];
+
+  nix.settings = {
+    substituters = [ "https://cuda-maintainers.cachix.org" ];
+    trusted-public-keys = [
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+    ];
+  };
 
   # Packages related to NVIDIA graphics
   environment.systemPackages = with pkgs; [
