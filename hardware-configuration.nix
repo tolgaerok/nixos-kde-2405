@@ -185,7 +185,8 @@ in
     # Swap is used when your RAM is full. It shouldn't happen often, 
     # but you will be thankful that you have it when it is needed.
 
-    # RAM size (8 GB) + 2 GB (since I have enough storage space)
+    # RAM size (27 GB) + 2 GB (since I have enough storage space)
+    # I will use 8GB as Folio has 8GB - but a total of 10GB swap is more then enough
     size = (1024 * 8) + (1024 * 2); # RAM size + 2 GB (since I have enough storage space)
   }];
 
