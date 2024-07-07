@@ -36,52 +36,49 @@ in
     ];
 
     # intel_idle.max_cstate=0
-    extraModprobeConfig = ''
-      
+    extraModprobeConfig = ''      
     '';
 
     kernel.sysctl = {
       # Kernel Settings
-      "kernel.pty.max" = 24000;                        # Sets the maximum number of pseudo-terminal (pty) devices.
-      "kernel.sched_autogroup_enabled" = 0;            # Disables automatic grouping of tasks in the scheduler.
-      "kernel.sched_migration_cost_ns" = 5000000;      # Sets the cost (in nanoseconds) of migrating a task to another CPU.
-      "kernel.sysrq" = 1;                              # Enables the SysRq key, which can be used for various low-level system commands.
-      "kernel.pid_max" = 131072;                       # Allows a large number of processes and threads to be managed.
+      "kernel.pty.max" = 24000;                        # Maximum number of pseudo-terminal (pty) devices.
+      "kernel.sched_autogroup_enabled" = 0;            # Disable automatic grouping of tasks in the scheduler.
+      "kernel.sched_migration_cost_ns" = 5000000;      # Cost (in nanoseconds) of migrating a task to another CPU.
+      "kernel.sysrq" = 1;                              # Enable the SysRq key for low-level system commands.
+      "kernel.pid_max" = 131072;                       # Maximum number of processes and threads.
 
       # Network Settings
-      "net.core.default_qdisc" = "cake";               # Sets the default queuing discipline (qdisc) for network interfaces to CAKE for improved network fairness and latency.
+      "net.core.default_qdisc" = "fq";                 # Use Fair Queueing (FQ) as default queuing discipline for reduced latency.
       "net.core.netdev_max_backlog" = 30000;           # Helps prevent packet loss during high traffic periods.
-      "net.core.rmem_default" = 262144;                # Default socket receive buffer size, improve network performance & applications that use sockets. Adjusted for 8GB RAM.
-      "net.core.rmem_max" = 33554432;                  # Maximum socket receive buffer size, determine the amount of data that can be buffered in memory for network operations. Adjusted for 8GB RAM.
-      "net.core.wmem_default" = 262144;                # Default socket send buffer size, improve network performance & applications that use sockets. Adjusted for 8GB RAM.
-      "net.core.wmem_max" = 33554432;                  # Maximum socket send buffer size, determine the amount of data that can be buffered in memory for network operations. Adjusted for 8GB RAM.
-      "net.ipv4.ipfrag_high_threshold" = 5242880;      # Reduce the chances of fragmentation. Adjusted for SSD.
-      "net.ipv4.tcp_congestion_control" = "westwood";  # Sets the TCP congestion control algorithm to Westwood for IPv4 in the Linux kernel.
-      "net.ipv4.tcp_keepalive_intvl" = 30;             # TCP keepalive interval between probes to detect if a connection is still alive.
-      "net.ipv4.tcp_keepalive_probes" = 5;             # TCP keepalive probes to detect if a connection is still alive.
-      "net.ipv4.tcp_keepalive_time" = 300;             # TCP keepalive interval in seconds to detect if a connection is still alive.
+      "net.core.rmem_default" = 4194304;               # Default socket receive buffer size increased for better network performance.
+      "net.core.rmem_max" = 16777216;                  # Maximum socket receive buffer size increased for better network performance.
+      "net.core.wmem_default" = 4194304;               # Default socket send buffer size increased for better network performance.
+      "net.core.wmem_max" = 16777216;                  # Maximum socket send buffer size increased for better network performance.
+      "net.ipv4.ipfrag_high_threshold" = 5242880;      # Threshold to reduce fragmentation.
+      "net.ipv4.tcp_congestion_control" = "bbr";       # Use TCP BBR congestion control algorithm for optimized throughput.
+      "net.ipv4.tcp_keepalive_intvl" = 15;             # TCP keepalive interval in seconds for faster detection of connection issues.
+      "net.ipv4.tcp_keepalive_probes" = 3;             # TCP keepalive probes for faster detection of connection issues.
+      "net.ipv4.tcp_keepalive_time" = 120;             # TCP keepalive interval in seconds for faster detection of connection issues.
 
       # Virtual Memory Settings
-      "vm.dirty_background_bytes" = 134217728;         # Sets the amount of dirty memory at which background writeback starts (128 MB).
-      "vm.dirty_bytes" = 402653184;                    # Sets the amount of dirty memory at which a process generating dirty memory will itself start writeback (384 MB).
-      "vm.dirty_background_ratio" = 40;                # Set the ratio of dirty memory at which background writeback starts (40%). Adjusted for SSD.
-      "vm.dirty_expire_centisecs" = 3000;              # Set the time at which dirty data is old enough to be eligible for writeout (3000 centiseconds). Adjusted for SSD.
-      "vm.dirty_ratio" = 80;                           # Set the ratio of dirty memory at which a process is forced to write out dirty data (80%). Adjusted for SSD.
-      "vm.dirty_time" = 0;                             # Disable dirty time accounting.
-      "vm.dirty_writeback_centisecs" = 300;            # Set the interval between two consecutive background writeback passes (300 centiseconds). Adjusted for SSD.
-      "vm.max_map_count" = 1000000;                    # Sets the maximum number of memory map areas a process can have.
-      "vm.min_free_kbytes" = 131072;                   # Minimum free memory for safety (in KB), helping prevent memory exhaustion situations. Adjusted for 8GB RAM.
-      "vm.swappiness" = 10;                            # Reduces the tendency of the kernel to swap out inactive memory pages.
-      "vm.vfs_cache_pressure" = 90;                    # Adjust vfs_cache_pressure (0-1000) to manage memory used for caching filesystem objects. Adjusted for 8GB RAM.
+      "vm.dirty_background_bytes" = 67108864;          # Reduce dirty background bytes to 64 MB for faster writeback initiation.
+      "vm.dirty_bytes" = 268435456;                    # Increase dirty bytes to 256 MB for more efficient dirty memory handling.
+      "vm.dirty_background_ratio" = 5;                 # Set very low dirty background ratio to trigger faster writeback (5%).
+      "vm.dirty_expire_centisecs" = 1000;              # Decrease dirty expire centiseconds to 10 seconds for faster writeout.
+      "vm.dirty_ratio" = 30;                           # Lower dirty ratio to 30% for faster process writeout.
+      "vm.dirty_time" = 1;                             # Enable dirty time accounting to track dirty page age.
+      "vm.dirty_writeback_centisecs" = 100;            # Reduce dirty writeback centiseconds to 1 second for faster background writeback.
+      "vm.max_map_count" = 1000000;                    # Maximum number of memory map areas per process.
+      "vm.min_free_kbytes" = 131072;                   # Minimum free memory for safety (in KB).
+      "vm.swappiness" = 10;                            # Kernel tendency to swap inactive memory pages.
+      "vm.vfs_cache_pressure" = 90;                    # Management of memory used for caching filesystem objects.
 
       # File System Settings
-      "fs.aio-max-nr" = 1000000;                       # Defines the maximum number of asynchronous I/O requests that can be in progress at a given time.
-      "fs.inotify.max_user_watches" = 65536;           # Sets the maximum number of file system watches, enhancing file system monitoring capabilities.
+      "fs.aio-max-nr" = 524288;                        # Increase maximum number of asynchronous I/O requests for faster file I/O.
+      "fs.inotify.max_user_watches" = 1048576;         # Increase maximum number of file system watches for better file system monitoring.
 
       # Nobara Tweaks
       "kernel.panic" = 5;                              # Reboot after 5 seconds on kernel panic.
-    
-
     };
 
     kernelParams = [
