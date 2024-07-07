@@ -10,10 +10,10 @@ in
 {
   imports = [
     # Intialise tmpfs parameters.
-    ../tmpfs/tmpfs.nix
-    ../numlock
     ../binds
     ../mounts
+    ../numlock
+    ../tmpfs/tmpfs.nix
   ];
 
   # Various plymouth themes

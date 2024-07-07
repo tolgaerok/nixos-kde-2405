@@ -83,24 +83,25 @@ in
   ###---------- Intel / Nvidia session ----------###
   environment.variables = {
     # Wayland-related settings (commented out)
-    # XDG_CURRENT_DESKTOP = "wayland";        # Sets the current desktop environment to Wayland.
-    # XDG_SESSION_TYPE = "wayland";           # Defines the session type as Wayland.
-    # __GLX_VENDOR_LIBRARY_NAME = "mesa";     # Specifies the GLX vendor library to use, ensuring Mesa's library is used.
+    
     # CLUTTER_BACKEND = "wayland";            # Specifies Wayland as the backend for Clutter.
+    # GDK_BACKEND = "x11";                       # Specifies X11 as the backend for GDK.
+    # LIBGL_ALWAYS_SOFTWARE = "1";               # Forces the use of software rendering for OpenGL.
     # LIBVA_DRIVER_NAME = "i965";             # Force Intel i965 driver.
     # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"; # Disables window decorations in Qt applications when using Wayland.
     # SDL_VIDEODRIVER = "wayland";            # Sets the video driver for SDL applications to Wayland.
+    # X11-related settings
+    # XDG_CURRENT_DESKTOP = "wayland";        # Sets the current desktop environment to Wayland.
+    # XDG_SESSION_CLASS = "user";                # Sets the session class to 'user'.
+    # XDG_SESSION_TYPE = "wayland";           # Defines the session type as Wayland.
+    # XDG_SESSION_TYPE = "x11";                  # Defines the session type as X11.
+    # __GLX_VENDOR_LIBRARY_NAME = "mesa";     # Specifies the GLX vendor library to use, ensuring Mesa's library is used.
 
-    # Other settings
     MOZ_ENABLE_WAYLAND = "1";                  # Enables Wayland support in Mozilla applications (e.g., Firefox).
     NIXOS_OZONE_WL = "1";                      # Enables the Ozone Wayland backend for Chromium-based browsers.
     NIXPKGS_ALLOW_UNFREE = "1";                # Allows the installation of packages with unfree licenses in Nixpkgs.
-
-    # X11-related settings
-    # XDG_SESSION_TYPE = "x11";                  # Defines the session type as X11.
-    # XDG_SESSION_CLASS = "user";                # Sets the session class to 'user'.
-    # GDK_BACKEND = "x11";                       # Specifies X11 as the backend for GDK.
-    # LIBGL_ALWAYS_SOFTWARE = "1";               # Forces the use of software rendering for OpenGL.
+    TOLGAOS = "true";
+    TOLGAOS_VERSION = "2.2";
   };  
   
   #---------------------------------------------------------------------
@@ -140,6 +141,8 @@ in
   # User account settings
   #---------------------------------------------------------------------
   users = {
+    mutableUsers = true;
+
     groups.${name} = {
       members = [ ];
     };
@@ -156,6 +159,7 @@ in
         "${name}"
         "adbusers"
         "audio"
+        "code"
         "corectrl"
         "disk"
         "docker"
@@ -179,44 +183,58 @@ in
         "users"
         "video"
         "wheel" # Enable ‘sudo’ for the user.
-        "code"
       ];
 
-      packages = with pkgs; [
-        # Internet related
-        # brave
-        firefox
-        google-chrome
-
-        # Personal
+      packages = with pkgs; [ 
         acpi
         bcachefs-tools
         clementine
         cpufrequtils
         cpupower-gui
+        direnv
         duf
         ethtool
+        firefox
         flameshot
         fortune
         gimp-with-plugins
         git
         git-up
+        gnome-extension-manager
+        gnome-usage
+        gnome.dconf-editor
+        gnome.file-roller
+        gnome.gnome-disk-utility
+        gnome.gnome-software
+        gnome.gnome-tweaks
         gnome.gvfs
         gnome.rygel
+        gnome.simple-scan
+        gnomeExtensions.appindicator
+        gnomeExtensions.dash-to-dock
+        gnomeExtensions.just-perfection
+        gnomeExtensions.logo-menu
+        gnomeExtensions.wifi-qrcode
+        gnomeExtensions.wireless-hid
+        google-chrome
         gupnp-tools # UPNP tools USAGE: gupnp-universal-cp
+        kate
         kdePackages.kate
-        libsForQt5.spectacle
         kdePackages.spectacle
         keyutils
         libnotify
         libsForQt5.qt5.qtgraphicaleffects
         libsForQt5.qt5.qtquickcontrols2
+        libsForQt5.spectacle
         libwps
+        lm_sensors
         lolcat
         megasync
         mesa
+        mpv
         neofetch
         nix-prefetch-git
+        nixfmt-rfc-style
         notify
         notify-desktop
         polkit
@@ -225,30 +243,13 @@ in
         powertop
         sutils
         tlp
+        unrar
+        unzip
         variety
-        wpsoffice
-        zstd
-
-        # Gnome related / extensions
-        gnome-extension-manager
-        gnome-usage
-        gnome.dconf-editor
-        gnome.gnome-disk-utility
-        gnome.gnome-software
-        gnome.gnome-tweaks
-        gnome.simple-scan
-        gnomeExtensions.appindicator
-        gnomeExtensions.dash-to-dock
-        gnomeExtensions.just-perfection
-        gnomeExtensions.logo-menu
-        gnomeExtensions.wifi-qrcode
-        gnomeExtensions.wireless-hid
-
-        # Development 
-        direnv
-        nixfmt-rfc-style
         vscode
         vscode-extensions.brettm12345.nixfmt-vscode
+        wpsoffice
+        zstd        
       ];
 
       openssh = {

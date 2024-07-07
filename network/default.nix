@@ -6,42 +6,39 @@
 }:
 
 {
-  imports = [ ./miniDLNA.nix ];
+  imports = [ 
+    ./miniDLNA.nix 
+  ];
 
+  # NetworkManager settings
   networking = {
     dhcpcd = {
-      wait = "background";
-      extraConfig = "noarp";
+      wait = "background";    # Configure dhcpcd to wait in the background for DHCP
+      extraConfig = "noarp";  # Additional configuration for dhcpcd to disable ARP
     };
 
+    # Enable NetworkManager
     networkmanager = {
-      enable = true;
+      enable = true; 
 
       # NextDns config
       appendNameservers = [
-        #"DNS=45.90.28.0#48b246.dns.nextdns.io"
-        #"DNS=2a07:a8c0::#48b246.dns.nextdns.io"
-        #"DNS=45.90.30.0#48b246.dns.nextdns.io"
-        #"DNS=2a07:a8c1::#48b246.dns.nextdns.io"
-        #"DNSOverTLS=yes"
+        # "DNS=45.90.28.0#48b246.dns.nextdns.io"
+        # "DNS=2a07:a8c0::#48b246.dns.nextdns.io"
+        # "DNS=45.90.30.0#48b246.dns.nextdns.io"
+        # "DNS=2a07:a8c1::#48b246.dns.nextdns.io"
+        # "DNSOverTLS=yes"
       ];
       connectionConfig = {
-        "ethernet.mtu" = 1462;
-        "wifi.mtu" = 1462;
+        "ethernet.mtu" = 1462;  # Set MTU for ethernet connections
+        "wifi.mtu" = 1462;      # Set MTU for WiFi connections
       };
     };
 
-    timeServers = [
-      "0.nixos.pool.ntp.org"
-      "1.nixos.pool.ntp.org"
-      "2.nixos.pool.ntp.org"
-      "3.nixos.pool.ntp.org"
-      "time.google.com"
-      "time2.google.com"
-      "time3.google.com"
-      "time4.google.com"
-    ];
+    # Specify time servers for NTP synchronization
+    timeServers = [ "pool.ntp.org" ];
 
+    # Define extra hosts for the network
     extraHosts = ''
       127.0.0.1       localhost
       127.0.0.1       G1800-Nixos
@@ -66,21 +63,24 @@
   };
 
   environment.systemPackages = with pkgs; [
-    ntp
-    gnome.rygel
+    ntp         # Network Time Protocol package for time synchronization
+    gnome.rygel # GNOME Rygel package for media streaming
   ];
 
+  # Enable GNOME Rygel service
   services = {
     gnome.rygel = {
-      enable = true;
+      enable = true; 
       # friendly_name = "NixOS-Rygel";
     };
   };
 
+  # Allow TCP port 8200 && 1900 through the firewall for rygel and miraclecast
   networking.firewall = {
-    allowedTCPPorts = [ 8200 ];
-    allowedUDPPorts = [ 1900 ];
+    allowedTCPPorts = [ 8200 ]; 
+    allowedUDPPorts = [ 1900 ]; 
   };
-
-  services.dbus.packages = [ pkgs.miraclecast ];
+  
+  # Add MiracleCast package to D-Bus services
+  services.dbus.packages = [ pkgs.miraclecast ]; 
 }
