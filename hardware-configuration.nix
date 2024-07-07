@@ -53,7 +53,7 @@ in
       "vm.max_map_count" = 1000000;                   # Sets the maximum number of memory map areas a process can have.
       "vm.swappiness" = 10;                           # Reduces the tendency of the kernel to swap out inactive memory pages.
       "vm.vfs_cache_pressure" = 50;                   # Controls the tendency of the kernel to reclaim the memory which is used for caching of directory and inode objects.
-      # "net.core.default_qdisc" = "cake";            # Sets the default queuing discipline (qdisc) for network interfaces to CAKE for improved network fairness and latency.
+      "net.core.default_qdisc" = "cake";            # Sets the default queuing discipline (qdisc) for network interfaces to CAKE for improved network fairness and latency.
       # "vm.page-cluster" = 1;                        # Controls the number of pages read in a single attempt, impacting swap read-ahead.
     };
 
@@ -178,7 +178,8 @@ in
     enableAllFirmware = true;         # Enable all firmware.
     pulseaudio.enable = false;        # Disable PulseAudio.
     usb-modeswitch.enable = true;     # Enable USB Modeswitch to manage mobile broadband devices.
-
+    logitech.wireless.enable = true;
+    logitech.wireless.enableGraphical = true;
 
     sane = {
       enable = true;                 # Scanner and printing drivers
