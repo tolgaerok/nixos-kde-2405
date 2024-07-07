@@ -249,7 +249,15 @@ in
         vscode
         vscode-extensions.brettm12345.nixfmt-vscode
         wpsoffice
-        zstd        
+        zstd   
+
+        # Make sure that every character can be displayed by adding this font
+        noto-fonts 
+        # qt recommends this system package for wayland
+        qt6.qtwayland  
+        xorg.libxcb # required for steam according to some people, but steam worked without it too 
+        # automount
+        udiskie
       ];
 
       openssh = {
@@ -275,6 +283,15 @@ in
     firefox.enable = true;
     gnupg.agent.enable = true; # Enable the GnuPG agent service for managing GPG keys.
     mtr.enable = true; # Enable the MTR (My Traceroute) network diagnostic tool.
+
+    git = {
+      enable = true;
+      config = {
+        user.name = "Tolga Erok";
+        user.email = "kingtolga@gmail.com";
+      };
+    };
+    
     ssh.startAgent = true; # Enable the SSH agent for managing SSH keys.
   };
 

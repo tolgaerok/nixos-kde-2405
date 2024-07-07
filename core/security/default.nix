@@ -40,6 +40,12 @@ in
       allowSimultaneousMultithreading = true;
       rtkit.enable = true;
       polkit.enable = true;
+      
+      # wheel does not need password, enable sudo
+      sudo = {
+        enable = true;
+        wheelNeedsPassword = false;
+      };
     };
   };
 }

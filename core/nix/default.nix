@@ -72,7 +72,7 @@ in
 
       # Accelerate package building (optimized for 8GB RAM and dual-core processor with Hyper-Threading)
       buildCores = lib.mkDefault 8;              # Specify 4 build cores for parallel building
-      max-jobs = lib.mkDefault 8;                # Set to 4 as the i7-3667U has 2 cores with 4 threads
+      max-jobs = "auto";                # Set to 4 as the i7-3667U has 2 cores with 4 threads
       speedFactor = 2;                           # Set speed factor to 2 for build performance optimization
 
       trusted-users = [

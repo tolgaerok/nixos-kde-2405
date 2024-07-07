@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 
 {
@@ -26,7 +31,9 @@ with lib;
         vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
         vaapiVdpau
         vulkan-validation-layers
+        amdvlk
       ];
+      extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
     };
   };
 }

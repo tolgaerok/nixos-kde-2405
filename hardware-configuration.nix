@@ -41,23 +41,51 @@ in
     '';
 
     kernel.sysctl = {
-      "kernel.panic" = "60";                             # Sets the time (in seconds) the kernel waits before automatically rebooting after a panic.
-      "kernel.pty.max" = 24000;                          # Sets the maximum number of pseudo-terminal (pty) devices.
-      "kernel.sched_autogroup_enabled" = 0;              # Disables automatic grouping of tasks in the scheduler.
-      "kernel.sched_migration_cost_ns" = 5000000;        # Sets the cost (in nanoseconds) of migrating a task to another CPU.
-      "kernel.sysrq" = 1;                                # Enables the SysRq key, which can be used for various low-level system commands.
-      "net.ipv4.tcp_congestion_control" = "westwood"; # Sets the TCP congestion control algorithm to Westwood for IPv4 in the Linux kernel.
-      "vm.dirty_background_bytes" = 268435456;        # Sets the amount of dirty memory at which background writeback starts (256 MB).
-      "vm.dirty_bytes" = 536870912;                   # Sets the amount of dirty memory at which a process generating dirty memory will itself start writeback (512 MB).
-      "vm.dirty_ratio" = "25";                        # 25% of all memory optionally as write cache
-      "vm.max_map_count" = 1000000;                   # Sets the maximum number of memory map areas a process can have.
-      "vm.swappiness" = 10;                           # Reduces the tendency of the kernel to swap out inactive memory pages.
-      "vm.vfs_cache_pressure" = 50;                   # Controls the tendency of the kernel to reclaim the memory which is used for caching of directory and inode objects.
-      "net.core.default_qdisc" = "cake";            # Sets the default queuing discipline (qdisc) for network interfaces to CAKE for improved network fairness and latency.
-      # "vm.page-cluster" = 1;                        # Controls the number of pages read in a single attempt, impacting swap read-ahead.
+      # Kernel Settings
+      "kernel.pty.max" = 24000;                        # Sets the maximum number of pseudo-terminal (pty) devices.
+      "kernel.sched_autogroup_enabled" = 0;            # Disables automatic grouping of tasks in the scheduler.
+      "kernel.sched_migration_cost_ns" = 5000000;      # Sets the cost (in nanoseconds) of migrating a task to another CPU.
+      "kernel.sysrq" = 1;                              # Enables the SysRq key, which can be used for various low-level system commands.
+      "kernel.pid_max" = 131072;                       # Allows a large number of processes and threads to be managed.
+
+      # Network Settings
+      "net.core.default_qdisc" = "cake";               # Sets the default queuing discipline (qdisc) for network interfaces to CAKE for improved network fairness and latency.
+      "net.core.netdev_max_backlog" = 30000;           # Helps prevent packet loss during high traffic periods.
+      "net.core.rmem_default" = 262144;                # Default socket receive buffer size, improve network performance & applications that use sockets. Adjusted for 8GB RAM.
+      "net.core.rmem_max" = 33554432;                  # Maximum socket receive buffer size, determine the amount of data that can be buffered in memory for network operations. Adjusted for 8GB RAM.
+      "net.core.wmem_default" = 262144;                # Default socket send buffer size, improve network performance & applications that use sockets. Adjusted for 8GB RAM.
+      "net.core.wmem_max" = 33554432;                  # Maximum socket send buffer size, determine the amount of data that can be buffered in memory for network operations. Adjusted for 8GB RAM.
+      "net.ipv4.ipfrag_high_threshold" = 5242880;      # Reduce the chances of fragmentation. Adjusted for SSD.
+      "net.ipv4.tcp_congestion_control" = "westwood";  # Sets the TCP congestion control algorithm to Westwood for IPv4 in the Linux kernel.
+      "net.ipv4.tcp_keepalive_intvl" = 30;             # TCP keepalive interval between probes to detect if a connection is still alive.
+      "net.ipv4.tcp_keepalive_probes" = 5;             # TCP keepalive probes to detect if a connection is still alive.
+      "net.ipv4.tcp_keepalive_time" = 300;             # TCP keepalive interval in seconds to detect if a connection is still alive.
+
+      # Virtual Memory Settings
+      "vm.dirty_background_bytes" = 134217728;         # Sets the amount of dirty memory at which background writeback starts (128 MB).
+      "vm.dirty_bytes" = 402653184;                    # Sets the amount of dirty memory at which a process generating dirty memory will itself start writeback (384 MB).
+      "vm.dirty_background_ratio" = 40;                # Set the ratio of dirty memory at which background writeback starts (40%). Adjusted for SSD.
+      "vm.dirty_expire_centisecs" = 3000;              # Set the time at which dirty data is old enough to be eligible for writeout (3000 centiseconds). Adjusted for SSD.
+      "vm.dirty_ratio" = 80;                           # Set the ratio of dirty memory at which a process is forced to write out dirty data (80%). Adjusted for SSD.
+      "vm.dirty_time" = 0;                             # Disable dirty time accounting.
+      "vm.dirty_writeback_centisecs" = 300;            # Set the interval between two consecutive background writeback passes (300 centiseconds). Adjusted for SSD.
+      "vm.max_map_count" = 1000000;                    # Sets the maximum number of memory map areas a process can have.
+      "vm.min_free_kbytes" = 131072;                   # Minimum free memory for safety (in KB), helping prevent memory exhaustion situations. Adjusted for 8GB RAM.
+      "vm.swappiness" = 10;                            # Reduces the tendency of the kernel to swap out inactive memory pages.
+      "vm.vfs_cache_pressure" = 90;                    # Adjust vfs_cache_pressure (0-1000) to manage memory used for caching filesystem objects. Adjusted for 8GB RAM.
+
+      # File System Settings
+      "fs.aio-max-nr" = 1000000;                       # Defines the maximum number of asynchronous I/O requests that can be in progress at a given time.
+      "fs.inotify.max_user_watches" = 65536;           # Sets the maximum number of file system watches, enhancing file system monitoring capabilities.
+
+      # Nobara Tweaks
+      "kernel.panic" = 5;                              # Reboot after 5 seconds on kernel panic.
+    
+
     };
 
     kernelParams = [
+      "zswap.enabled=1"
       "elevator=kyber"              # Change IO scheduler to Kyber
       "fbcon=nodefer"               # prevent the kernel from blanking plymouth out of the fb
       "intel_iommu=on"              # Enable IOMMU
@@ -154,7 +182,15 @@ in
     #'';
   };
 
-  swapDevices = [ ];
+  # Zswap requires a swapfile or partition to work correctly
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    # Swap is used when your RAM is full. It shouldn't happen often, 
+    # but you will be thankful that you have it when it is needed.
+
+    # RAM size (8 GB) + 2 GB (since I have enough storage space)
+    size = (1024 * 8) + (1024 * 2); # RAM size + 2 GB (since I have enough storage space)
+  }];
 
   networking = {
     useDHCP = lib.mkDefault true;
@@ -186,4 +222,8 @@ in
       extraBackends = extraBackends; # Scanner and printing drivers
     };
   };
+
+  # Earlyoom killer
+  systemd.oomd.enable = false;
+  services.earlyoom.enable = true;
 }

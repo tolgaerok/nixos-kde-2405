@@ -8,6 +8,7 @@
 {
   imports = [ 
     ./miniDLNA.nix 
+    ./cloudflare.nix
   ];
 
   # NetworkManager settings
