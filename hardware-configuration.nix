@@ -82,6 +82,7 @@ in
     };
 
     kernelParams = [
+      "pcie_aspm=off"
       "zswap.enabled=1"
       "elevator=kyber"              # Change IO scheduler to Kyber
       "fbcon=nodefer"               # prevent the kernel from blanking plymouth out of the fb
@@ -188,6 +189,7 @@ in
     # RAM size (27 GB) + 2 GB (since I have enough storage space)
     # I will use 8GB as Folio has 8GB - but a total of 10GB swap is more then enough
     size = (1024 * 8) + (1024 * 2); # RAM size + 2 GB (since I have enough storage space)
+    priority = 10;
   }];
 
   networking = {

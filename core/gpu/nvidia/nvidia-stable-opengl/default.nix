@@ -71,7 +71,8 @@
       #
       # Current monitor does not support it, but this is useful for
       # the future
-      "NVreg_RegistryDwords=RMUseSwI2c=0x01;RMI2cSpeed=100"
+      #"NVreg_RegistryDwords=RMUseSwI2c=0x01;RMI2cSpeed=100"
+      "NVreg_RegistryDwords=RMI2cSpeed=100"
       # When (if!) I get another nvidia GPU, check for resizeable bar
       # settings
       # Set temporary file path

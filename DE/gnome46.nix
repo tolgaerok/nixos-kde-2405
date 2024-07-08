@@ -39,6 +39,13 @@ in
         };
       };
       videoDrivers = [ "nvidia" ]; # Use Nvidia drivers for video.
+      deviceSection = ''
+        Option "Coolbits" "12"
+        Option "TripleBuffer" "True"
+        Option "NoLogo" "True"
+        Option "UseNvKmsCompositionPipeline" "True"
+        Option "UseEDIDFreqs" "True"
+      '';
       desktopManager.gnome.enable = true; # Enable GNOME as the desktop manager.
       xkb = {
         layout = "au"; # Set the keyboard layout to "au" (Australia).
