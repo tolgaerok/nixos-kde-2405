@@ -48,7 +48,8 @@ in
       "kernel.pid_max" = 131072;                       # Maximum number of processes and threads.
 
       # Network Settings
-      "net.core.default_qdisc" = "fq";                 # Use Fair Queueing (FQ) as default queuing discipline for reduced latency.
+      # "net.core.default_qdisc" = "fq";                 # Use Fair Queueing (FQ) as default queuing discipline for reduced latency.
+      "net.core.default_qdisc" = "cake";
       "net.core.netdev_max_backlog" = 30000;           # Helps prevent packet loss during high traffic periods.
       "net.core.rmem_default" = 4194304;               # Default socket receive buffer size increased for better network performance.
       "net.core.rmem_max" = 16777216;                  # Maximum socket receive buffer size increased for better network performance.

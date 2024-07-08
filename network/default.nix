@@ -21,18 +21,27 @@
     # Enable NetworkManager
     networkmanager = {
       enable = true; 
+      
+      # Append Cloudflare and Google DNS servers
+      appendNameservers = [
+        "1.1.1.1"
+        "8.8.8.8"
+      ];
 
       # NextDns config
-      appendNameservers = [
+      #appendNameservers = [
         # "DNS=45.90.28.0#48b246.dns.nextdns.io"
         # "DNS=2a07:a8c0::#48b246.dns.nextdns.io"
         # "DNS=45.90.30.0#48b246.dns.nextdns.io"
         # "DNS=2a07:a8c1::#48b246.dns.nextdns.io"
         # "DNSOverTLS=yes"
-      ];
+      #];
+
       connectionConfig = {
-        "ethernet.mtu" = 1462;  # Set MTU for ethernet connections
-        "wifi.mtu" = 1462;      # Set MTU for WiFi connections
+        "ethernet.mtu" = 1500;  # Set MTU for ethernet connections
+        "wifi.mtu" = 1500;      # Set MTU for WiFi connections
+        "wifi.802-11-wireless.fragmentation-threshold" = 1500;  # Set fragmentation threshold for WiFi
+        "wifi.802-11-wireless.rts-threshold" = 1000;            # Set RTS/CTS threshold for WiFi
       };
     };
 

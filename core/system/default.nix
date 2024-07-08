@@ -16,7 +16,7 @@
     ./filesystem-support
     ./firewall
     ./multi-threading
-    ./network
+    #./network
     ./system
     ./systemd
     ./unfree-insecure

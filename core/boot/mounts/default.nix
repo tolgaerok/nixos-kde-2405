@@ -7,10 +7,9 @@
 }:
 
 let
-  description = "My Qnap";
-  device = "//192.168.0.17/public";
-  name = "tolga";
-  protocol = "smb:";
+  
+  inherit (import ../../variables) protocol device description name;
+  
 in
 {
   # Custom remote mount

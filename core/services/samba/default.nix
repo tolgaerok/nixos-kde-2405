@@ -8,11 +8,12 @@
 }:
 
 let
-  # Retrieve the username from configuration or set a default
-  # username = config.users.extraUsers.username.name or "tolga";
-  username = "tolga";
-  mySharedPath = "/home/${username}/Public";
-  mySharedPath2 = "/home/${username}/scripts";
+  # Retrieve the name from variables.nix file!
+
+  inherit (import ../../../core/variables) name;
+
+  mySharedPath = "/home/${name}/Public";
+  mySharedPath2 = "/home/${name}/scripts";
   sharedOptions = {
     "guest ok" = true;
     "read only" = false;
@@ -147,7 +148,7 @@ in
     #};
   };
   systemd.tmpfiles.rules = [
-    "d ${mySharedPath2} 0777 ${username} users - -"
-    "d ${mySharedPath} 0777 ${username} users - -"
+    "d ${mySharedPath2} 0777 ${name} users - -"
+    "d ${mySharedPath} 0777 ${name} users - -"
   ];
 }

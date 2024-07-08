@@ -157,21 +157,28 @@ in
     "systemd-udev-settle".enable = true;          # Enable the systemd-udev-settle service or Disable to decrease boot time
 
     # Configure the flathub remote
-    configure-flathub-repo = {
-      enable = true;
-      after = [
-        "multi-user.target"
-        "network.target"
-      ];
-      wantedBy = [ "multi-user.target" ];
-      path = [ pkgs.flatpak ];
+    #configure-flathub-repo = {
+    #  enable = true;
+    #  after = [
+    #    "multi-user.target"
+    #    "network.target"
+    #  ];
+    #  wantedBy = [ "multi-user.target" ];
+    #  path = [ pkgs.flatpak ];
+    #  script = ''
+    #    if flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo; then
+    #      echo "¯\_(ツ)_/¯  Flathub repo added and configured successfully ==>  [✔] "
+    #    else
+    #      echo "¯\_(ツ)_/¯  Error: Failed to configure Flathub repo ==>  [✘]"
+    #      exit 1  # Exit with an error code to indicate failure
+    #    fi
+    #  '';
+    #};
+
+    flatpak-repo = {
+    path = [ pkgs.flatpak ];
       script = ''
-        if flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo; then
-          echo "¯\_(ツ)_/¯  Flathub repo added and configured successfully ==>  [✔] "
-        else
-          echo "¯\_(ツ)_/¯  Error: Failed to configure Flathub repo ==>  [✘]"
-          exit 1  # Exit with an error code to indicate failure
-        fi
+        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
       '';
     };
 

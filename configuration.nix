@@ -42,19 +42,21 @@
 with lib;
 
 let
+  
+  # Inherit varibles
+  inherit (import ./core/variables) gitEmail gitUsername name country hostname locale;
+
+  # Kernel options
   latest-std-kernel = pkgs.linuxPackages_latest;
   latest-xanmod-kernel = pkgs.linuxPackages_xanmod_latest;
-  zen-std-kernel = pkgs.linuxPackages_zen;
-
-  country = "Australia/Perth";
-  hostname = "G1800-Nixos";
-  locale = "en_AU.UTF-8";
-  name = "tolga";
+  zen-std-kernel = pkgs.linuxPackages_zen; 
+  
 in
 
 {
   imports = [
     # Include the results of the hardware scan.
+    # ./core/variables
     ./DE/gnome46.nix
     ./cachix.nix
     ./core/boot/efi/efi.nix
@@ -73,6 +75,23 @@ in
   # Custom kernel selection from user
   #---------------------------------------------------------------------
   boot.kernelPackages = latest-std-kernel;
+
+  # Enable UPNP for gupnp-tools # UPNP tools USAGE: gupnp-universal-cp
+  programs = {
+    firefox.enable = true;
+    gnupg.agent.enable = true; # Enable the GnuPG agent service for managing GPG keys.
+    mtr.enable = true; # Enable the MTR (My Traceroute) network diagnostic tool.
+
+    git = {
+      enable = true;
+      config = {
+        user.name = "${gitUsername}";
+        user.email = "${gitEmail}";
+      };
+    };
+    
+    ssh.startAgent = true; # Enable the SSH agent for managing SSH keys.
+  };
 
   #---------------------------------------------------------------------
   # Ozone-Wayland backend when running in a Wayland session. 
@@ -153,6 +172,7 @@ in
     };
 
     users."${name}" = {
+      homeMode = "755";
       isNormalUser = true;
       description = "${name}";
       extraGroups = [
@@ -276,24 +296,7 @@ in
   #---------------------------------------------------------------------
 
   # Enable sound with pipewire.
-  sound.enable = true;
-
-  # Enable UPNP for gupnp-tools # UPNP tools USAGE: gupnp-universal-cp
-  programs = {
-    firefox.enable = true;
-    gnupg.agent.enable = true; # Enable the GnuPG agent service for managing GPG keys.
-    mtr.enable = true; # Enable the MTR (My Traceroute) network diagnostic tool.
-
-    git = {
-      enable = true;
-      config = {
-        user.name = "Tolga Erok";
-        user.email = "kingtolga@gmail.com";
-      };
-    };
-    
-    ssh.startAgent = true; # Enable the SSH agent for managing SSH keys.
-  };
+  sound.enable = true;  
 
   #---------------------------------------------------------------------
   # Automatic system upgrades, automatically reboot after an upgrade if
