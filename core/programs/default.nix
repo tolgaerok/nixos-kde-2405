@@ -5,7 +5,7 @@
     # Configuration for Programs..
 
     # ./fish
-    #./git
+    ./git
     ./adb
     ./command-not-found
     ./corectrl

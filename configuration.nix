@@ -42,24 +42,39 @@
 with lib;
 
 let
-  
+  # Determine if the system has an NVIDIA GPU
+  isNvidiaSystem = builtins.readFile "/proc/driver/nvidia/version" != "";
+
+  # Determine if the system has an Intel GPU
+  isIntelSystem = builtins.pathExists "/sys/class/drm/card0/device/vendor" && builtins.readFile "/sys/class/drm/card0/device/vendor" == "0x8086\n";
+
+  # Choose gpu
+  gpuConfig = if isIntelSystem then
+    ./core/gpu/intel/intel-laptop/HP-Folio-9470M/Eilite-Folio-9470M-HD-Intel-4000.nix-STOP
+  else if isNvidiaSystem then
+    ./core/gpu/nvidia/nvidia-stable-opengl.nix-STOP
+  else
+    ./core/gpu/error.nix-STOP;
+
   # Inherit varibles
   inherit (import ./core/variables) gitEmail gitUsername name country hostname locale;
 
   # Kernel options
   latest-std-kernel = pkgs.linuxPackages_latest;
   latest-xanmod-kernel = pkgs.linuxPackages_xanmod_latest;
-  zen-std-kernel = pkgs.linuxPackages_zen; 
-  
+  zen-std-kernel = pkgs.linuxPackages_zen;   
 in
-
 {
   imports = [
-    # Include the results of the hardware scan.
+    
     # ./core/variables
+
+    # gpuConfig
+
     ./DE/gnome46.nix
     ./cachix.nix
     ./core/boot/efi/efi.nix
+    ./core/environment
     ./core/gpu/nvidia/nvidia-stable-opengl # NVIDIA with hardware acceleration (Open-GL) for GT-1030++
     ./core/modules
     ./core/packages
@@ -77,62 +92,21 @@ in
   boot.kernelPackages = latest-std-kernel;
 
   # Enable UPNP for gupnp-tools # UPNP tools USAGE: gupnp-universal-cp
-  programs = {
-    firefox.enable = true;
-    gnupg.agent.enable = true; # Enable the GnuPG agent service for managing GPG keys.
-    mtr.enable = true; # Enable the MTR (My Traceroute) network diagnostic tool.
-
+  programs = {    
     git = {
       enable = true;
       config = {
         user.name = "${gitUsername}";
         user.email = "${gitEmail}";
       };
-    };
-    
+    };    
     ssh.startAgent = true; # Enable the SSH agent for managing SSH keys.
   };
-
-  #---------------------------------------------------------------------
-  # Ozone-Wayland backend when running in a Wayland session. 
-  # This improves performance and compatibility, making your experience 
-  # smoother and more integrated with the Wayland compositor you are using.
-  #---------------------------------------------------------------------
-
-  ###---------- Intel / Nvidia session ----------###
-  environment.variables = {
-    # Wayland-related settings (commented out)
-    
-    # CLUTTER_BACKEND = "wayland";            # Specifies Wayland as the backend for Clutter.
-    # GDK_BACKEND = "x11";                       # Specifies X11 as the backend for GDK.
-    # LIBGL_ALWAYS_SOFTWARE = "1";               # Forces the use of software rendering for OpenGL.
-    # LIBVA_DRIVER_NAME = "i965";             # Force Intel i965 driver.
-    # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"; # Disables window decorations in Qt applications when using Wayland.
-    # SDL_VIDEODRIVER = "wayland";            # Sets the video driver for SDL applications to Wayland.
-    # X11-related settings
-    # XDG_CURRENT_DESKTOP = "wayland";        # Sets the current desktop environment to Wayland.
-    # XDG_SESSION_CLASS = "user";                # Sets the session class to 'user'.
-    # XDG_SESSION_TYPE = "wayland";           # Defines the session type as Wayland.
-    # XDG_SESSION_TYPE = "x11";                  # Defines the session type as X11.
-    # __GLX_VENDOR_LIBRARY_NAME = "mesa";     # Specifies the GLX vendor library to use, ensuring Mesa's library is used.
-
-    MOZ_ENABLE_WAYLAND = "1";                  # Enables Wayland support in Mozilla applications (e.g., Firefox).
-    NIXOS_OZONE_WL = "1";                      # Enables the Ozone Wayland backend for Chromium-based browsers.
-    NIXPKGS_ALLOW_UNFREE = "1";                # Allows the installation of packages with unfree licenses in Nixpkgs.
-    TOLGAOS = "true";
-    TOLGAOS_VERSION = "2.2";
-  };  
   
   #---------------------------------------------------------------------
   # Networking
   #---------------------------------------------------------------------
-  networking = {
-    networkmanager = {
-      enable = true;      
-    };
-    hostName = "${hostname}"; # Set the hostname for the system.
-    firewall.allowedTCPPorts = [ 22 ]; # Allow incoming TCP traffic on port 22 (SSH).
-  };
+  networking.hostName = "${hostname}";  
 
   # -----------------------------------------------
   # Locale settings
@@ -290,13 +264,6 @@ in
       };
     };
   };
-
-  #---------------------------------------------------------------------
-  # Audio settings
-  #---------------------------------------------------------------------
-
-  # Enable sound with pipewire.
-  sound.enable = true;  
 
   #---------------------------------------------------------------------
   # Automatic system upgrades, automatically reboot after an upgrade if

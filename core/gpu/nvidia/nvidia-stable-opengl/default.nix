@@ -112,7 +112,39 @@
   };
 
   # Specify the Nvidia video driver for Xorg
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver = {
+    videoDrivers = [ "nvidia" ];
+    extraConfig = ''
+      Section "Device"
+         Identifier "Dev0"
+         Driver "nvidia"         
+         Option "Coolbits" "12"
+         Option "TripleBuffer" "True"
+         Option "NoLogo" "True"
+         Option "UseNvKmsCompositionPipeline" "True"
+         Option "UseEDIDFreqs" "True"
+         Option "RegistryDwords" "RMUseSwI2c=0x01; RMI2cSpeed=100"
+         # solves problem of i2c errors with nvidia driver
+         # per https://devtalk.nvidia.com/default/topic/572292/-solved-does-gddccontrol-work-for-anyone-here-nvidia-i2c-monitor-display-ddc/#4309293
+      EndSection
+
+      Section "Screen"
+        Identifier     "Screen0"
+        Device         "Device0"
+        Monitor        "Monitor0"
+        DefaultDepth    24
+        Option         "Stereo" "0"
+        Option         "nvidiaXineramaInfoOrder" "HDMI-0"
+        Option         "metamodes" "DVI-D-0: 1920x1080_75 +1920+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}, HDMI-0: 1920x1080_75 +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}"
+        Option         "SLI" "Off"
+        Option         "MultiGPU" "Off"
+        Option         "BaseMosaic" "off"
+        SubSection     "Display"
+        Depth       24
+        EndSubSection
+      EndSection
+    '';
+  };
 
   nix.settings = {
     substituters = [ "https://cuda-maintainers.cachix.org" ];

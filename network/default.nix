@@ -86,8 +86,8 @@
   };
 
   # Allow TCP port 8200 && 1900 through the firewall for rygel and miraclecast
-  networking.firewall = {
-    allowedTCPPorts = [ 8200 ]; 
+  networking.firewall = {    
+    allowedTCPPorts = [ 8200 22]; 
     allowedUDPPorts = [ 1900 ]; 
   };
   

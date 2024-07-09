@@ -2,16 +2,14 @@
 with lib;
 
 {
-
   # ---------------------------------------------------------------------
   # My personal software collection ..
   # ---------------------------------------------------------------------
 
- #services.teamviewer.enable = true;
+  # services.teamviewer.enable = true;
 
   environment = {
     systemPackages = with pkgs; [
-
       # ---------------------------------------------------------------------
       # Andriod software
       # ---------------------------------------------------------------------
@@ -23,9 +21,7 @@ with lib;
                              # provides: lpadd append2simg lpmake mke2fs.android mkdtboimg simg2img lpdump lpunpack ext2simg 
                              # e2fsdroid adb unpack_bootimg repack_bootimg avbtool img2simg fastboot mkbootimg lpflash
 
-      # droidcam               # Linux client for DroidCam app
       scrcpy                 # Display and control Android devices over USB or TCP/IP
-      # waydroid             # Waydroid is a container-based approach to boot a full Android system on a regular GNU/Linux system
 
       # ---------------------------------------------------------------------
       # Archive Utilities
@@ -122,9 +118,7 @@ with lib;
       # Database related
       # ---------------------------------------------------------------------
 
-      #dbeaver                         # Universal SQL Client for developers, DBA and analysts. Supports MySQL, PostgreSQL, MariaDB, SQLite, and more
-
-      pgmodeler                       # A database modeling tool for PostgreSQL
+      # pgmodeler                       # A database modeling tool for PostgreSQL
                                       # provides: pgmodeler-cli pgmodeler pgmodeler-ch pgmodeler-se
 
       sqlitebrowser                   # DB Browser for SQLite
@@ -133,21 +127,13 @@ with lib;
       # cli-utilities
       # ---------------------------------------------------------------------
 
-      # dialog                        # Display dialog boxes from shell
       doas                            # Executes the given command as another user
-      # fx                              # Terminal JSON viewer
-
       fzf                             # A command-line fuzzy finder written in Go
                                       # provides: fzf-tmux fzf-share fzf
 
       # ---------------------------------------------------------------------
       # Clipboard Utilities:
       # ---------------------------------------------------------------------
-
-      # wl-clipboard                    # Command-line copy/paste utilities for Wayland
-                                        # provides: wl-copy wl-paste
-
-      # wl-clipboard-x11                # A wrapper to use wl-clipboard as a drop-in replacement for X11 clipboard tools
 
       # ---------------------------------------------------------------------
       # Code Search and Analysis:
@@ -163,51 +149,29 @@ with lib;
       # Utilities
       # ---------------------------------------------------------------------
 
-      # graalvm17-ce                    # High-Performance Polyglot VM
-      # mosh                            # Mobile shell (ssh replacement)
-      # sublime4                        # Sophisticated text editor for code, markup and prose
-      #direnv                            # A shell extension that manages your environment
+      direnv                            # A shell extension that manages your environment
       nix-direnv                        # A fast, persistent use_nix implementation for direnv
       nixfmt-classic                            # An opinionated formatter for Nix
-      # nix-linter                        # to check for several common mistakes or stylistic errors in Nix expressions, such as unused arguments, empty let blocks, etcetera.
       nixos-option
-      #vscode                            # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
-      #vscode-extensions.brettm12345.nixfmt-vscode
       vscode-extensions.mkhl.direnv
 
       # ---------------------------------------------------------------------
       # Github related
       # ---------------------------------------------------------------------
-
-      # hut     # A CLI tool for Sourcehut / sr.ht
+    
       git       # Distributed version control system
 
       # ---------------------------------------------------------------------
       # Programming Languages and Tools:
       # ---------------------------------------------------------------------
-
-      # python311Packages.pip       # The PyPA recommended tool for installing Python packages
-      # scala-cli                   # Command-line tool to interact with the Scala language
       
       python311Full                 # A high-level dynamically-typed programming language
                                     # provides: idle3.11 python3.11-config idle python3-config pydoc pydoc3 pydoc3.11
                                     #           idle3 2to3-3.11 2to3 python3.11 python3 python-config python
 
-
-
       # ---------------------------------------------------------------------
       # Dsctool
       # ---------------------------------------------------------------------
-
-      # dvc                            # Version Control System for Machine Learning Projects
-      # gnuplot                        # A portable command-line driven graphing utility for many platforms
-      # iredis                         # A Terminal Client for Redis with AutoCompletion and Syntax Highlighting
-      # litecli                        # Command-line interface for SQLite
-      # luigi                          # Python package that helps you build complex pipelines of batch jobs
-      # quarto                         # Open-source scientific and technical publishing system built on Pandoc
-      # visidata                       # Interactive terminal multitool for tabular data
-      # mpi                              # Open source MPI-3 implementation
-      # root                             # A data analysis framework
 
       # ---------------------------------------------------------------------
       # Scanning and Image Viewing
@@ -231,13 +195,6 @@ with lib;
 
       # whatsapp-for-linux             # Whatsapp desktop messaging app
 
-
-      # ---------------------------------------------------------------------
-      # Scientific computing
-      # ---------------------------------------------------------------------
-
-      # julia                         # Scientific computing       https://docs.julialang.org/en/v1/
-
       # ---------------------------------------------------------------------
       # Miscellaneous:
       # ---------------------------------------------------------------------
@@ -247,8 +204,7 @@ with lib;
                                      # ex: $ fortune | cowsay -f tux
                                      #     $ fortune | cowsay -e ^^
                                      #     $ fortune | cowsay | lolcat
-
-      # fish                         # Smart and user-friendly command line shell
+     
       flatpak                        # Linux application sandboxing and distribution framework
       fortune                        # unstr rot strfile fortune
 
@@ -267,8 +223,7 @@ with lib;
       # Media and Entertainment:
       # ---------------------------------------------------------------------
 
-      vlc                            # Cross-platform media player and streaming server
-      #youtube-dl                     # Command-line tool to download videos from YouTube.com and other sites
+      vlc                            # Cross-platform media player and streaming server   
 
       # ---------------------------------------------------------------------
       # Picture manger
@@ -281,22 +236,12 @@ with lib;
       # Picture Editors
       # ---------------------------------------------------------------------
 
-      #gimp-with-plugins              # The GNU Image Manipulation Program
-
-      # ---------------------------------------------------------------------
-      # Disc burner
-      # ---------------------------------------------------------------------
-
-      # brasero                        # A Gnome CD/DVD Burner
+      gimp-with-plugins              # The GNU Image Manipulation Program
 
       # ---------------------------------------------------------------------
       # Remote Access and Automation:
       # ---------------------------------------------------------------------
-
-      # heroku                         # Everything you need to get started using Heroku
-      # powershell                     # Powerful cross-platform (Windows, Linux, and macOS) shell and scripting language based on .NET
-      #teamviewer                     # Desktop sharing application, providing remote support and online meetings
-      # anydesk
+      anydesk
       sshpass                        # Non-interactive ssh password auth
 
       # ---------------------------------------------------------------------
@@ -310,46 +255,14 @@ with lib;
       # KDE Plasma tools
       # ---------------------------------------------------------------------
 
-      # kgpg                           # A KDE based interface for GnuPG, a powerful encryption utility
-      # libsForQt5.kdenetwork-filesharing
       ark                            # Graphical file compression/decompression utility
       filelight                      # Disk usage statistics
       kate                           # Advanced text editor
-      #kcalc                          # Scientific calculator
-      #kdiff3                         # Compares and merges 2 or 3 files or directories
-      #krename                        # A powerful batch renamer for KDE
-      #libsForQt5.kweather            # Weather application for Plasma Mobile
-      #libsForQt5.kweathercore        # Library to facilitate retrieval of weather information including forecasts and alerts 
-      # libsForQt5.qt5.qttools       # A cross-platform application framework for C++
-                                     # qhelpgenerator linguist qtplugininfo qdistancefieldgenerator pixeltool
-                                     # qcollectiongenerator assistant qtdiag qdbusviewer lupdate qtpaths
-                                     # qtattributionsscanner lconvert designer lupdate-pro lrelease qdbus lprodump lrelease-pro
-
-      #libsForQt5.quazip             # Provides access to ZIP archives from Qt 5 programs
-                                    # quazip
-
-      # qt6.qttools                 # A cross-platform application framework for C++
-                                    # assistant qtplugininfo qdbus lrelease linguist qtdiag6 qtdiag qdbusviewer
-                                    # qdistancefieldgenerator pixeltool lconvert lupdate designer
-
-      # qt6Packages.quazip          # Provides access to ZIP archives from Qt programs
-                                    # quazip
-
-      # ---------------------------------------------------------------------
-      # xscreensaver
-      # ---------------------------------------------------------------------
-
-      # xscreensaver                  # xscreensaver-demo xscreensaver-settings xscreensaver xscreensaver-command
-
+ 
       # ---------------------------------------------------------------------
       # system tools
       # ---------------------------------------------------------------------
 
-      # isoimagewriter                # isoimagewriter
-      # testdisk-qt                   # testdisk photorec fidentify qphotorec
-      # ventoy-full                   # A New Bootable USB Solution
-                                      # ventoy   ventoy-persistent   ventoy-web   ventoy-plugson   ventoy-extend-persistent
-      # keepassxc                     # keepassxc keepassxc-cli keepassxc-proxy
       media-downloader                # media-downloader
                                       
       # ---------------------------------------------------------------------
@@ -368,10 +281,7 @@ with lib;
       efibootmgr                    # A Linux user-space application to modify the Intel Extensible Firmware Interface (EFI) Boot Manager
                                     # efibootdump efibootmgr
 
-      gum                           # gum https://github.com/charmbracelet/gum
-
-      # krusader                      # Norton/Total Commander clone for KDE
-                                    # krusader
+      gum                           # gum https://github.com/charmbracelet/gum 
 
       espeak-classic                # Compact open source software speech synthesizer
                                     # espeak
@@ -389,9 +299,7 @@ with lib;
       # ---------------------------------------------------------------------
       # File Transfer:
       # ---------------------------------------------------------------------
-
-      # filezilla
-      # libfilezilla
+   
       rsync
       transmission-gtk
       zsync
@@ -401,7 +309,6 @@ with lib;
       # ---------------------------------------------------------------------
 
       gparted                       # Graphical disk partitioning tool
-
       hw-probe                      # Probe for hardware, check operability and find drivers
                                     #
                                     # sudo -E hw-probe -all -upload
@@ -412,8 +319,6 @@ with lib;
       # Terminal Utilities
       # ---------------------------------------------------------------------
 
-      # delta                       # A syntax-highlighting pager for git
-      # imagemagick                 # A software suite to create, edit, compose, or convert bitmap images
       asunder                       # A graphical Audio CD ripper and encoder for Linux
       bashInteractive               # GNU Bourne-Again Shell, the de facto standard shell on Linux (for interactive use)
       cmatrix                       # Simulates the falling characters theme from The Matrix movie
@@ -426,23 +331,14 @@ with lib;
                                     # inotifywait   inotifywatch
                                     # Source:  https://github.com/inotify-tools/inotify-tools/wiki
 
-      # less                          # A more advanced file pager than ‘more’
-      # lf                            # A terminal file manager written in Go and heavily inspired by ranger
-      # neovim                        # Vim text editor fork focused on extensibility and agility
-      # sl                            # Steam Locomotive runs across your terminal when you type 'sl'
-      # stow                          # A tool for managing the installation of multiple software packages in the same run-time directory tree
-      # tig                           # Text-mode interface for git
-      # tldr                          # Simplified and community-driven man pages
-      # vim                           # The most popular clone of the VI editor
-      # parallel-full                 # provides additional features for parallel computing. It is used for parallel processing, distributed computing, and other high-performance computing scenarios
+      
       gnome.zenity                  # Tool to display dialogs from the commandline and shell scripts
       lfs                           # Get information on your mounted disks
       lsd                           # The next gen ls command
       lsdvd                         # Display information about audio, video, and subtitle tracks on a DVD
       ncdu                          # Disk usage analyzer with an ncurses interface
-      #neofetch                      # A fast, highly customizable system info script
+      
       pciutils                      # A collection of programs for inspecting and manipulating configuration of PCI devices
-      #pfetch                        # A pretty system information tool written in POSIX sh
       pmutils                       # A small collection of scripts that handle suspend and resume on behalf of HAL
       psmisc                        # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
       rPackages.pkgconfig           # Set configuration options on a per-package basis. Options set by a given package only apply to that package, other packages are unaffected.
@@ -459,96 +355,44 @@ with lib;
       # Office and Productivity:
       #---------------------------------------------------------------------
 
-      # deepin.deepin-calculator      # An easy to use calculator for ordinary users
-      #wpsoffice                     # Office suite, formerly Kingsoft Office
-
       #---------------------------------------------------------------------
       # New additions:
       #---------------------------------------------------------------------
 
       # megasync          # Easy automated syncing between your computers and your MEGA Cloud Drive
       # onedrive          # A complete tool to interact with OneDrive on Linux
+      glances           # glances   : Cross-platform curses-based monitoring tool
       rclone            # Command line program to sync files and directories to and from major cloud storage
       rclone-browser    # Graphical Frontend to Rclone written in Qt
-      glances           # glances   : Cross-platform curses-based monitoring tool
 
       #-----------------------------------------------------------------  
       # Extra Audio packages
       #-----------------------------------------------------------------
 
-      #alsa-utils
-      #pavucontrol
-      #pulseaudio
-      #pulsemixer
+      # alsa-utils
+      # pavucontrol
+      # pulseaudio
+      # pulsemixer
 
       #-----------------------------------------------------------------  
       # Extra Misc packages
       #-----------------------------------------------------------------
 
-      # lsb-release
-      # plex
-      # plex-media-player
-      # plexRaw
-      # pstree 
-      # rename 
-      # rocm-opencl-icd
-      # rocm-opencl-runtime
-      # smartmontools
-      # sysstat
-      # uptimed 
-      redhat-official-fonts
       appimage-run     
       bash
       bc
-      #firefox
+      ghostscript
+      ghostscript_headless
       glxinfo
+      gnomeExtensions.mock-tray
       google-chrome
       krita
       libva
       libva-utils
       minidlna
       nftables
-      #plasma-browser-integration
+      redhat-official-fonts
       vim
-      #blender
-
-      # libsForQt5.kalendar
-      #kdePackages.pim-data-exporter
-      #pim-sieve-editor
-
-      
-
-      ghostscript
-      ghostscript_headless
-
-      #korganizer
-      #kdePackages.akonadi
-      #kdePackages.akonadi-import-wizard
-      #kdePackages.akonadi-mime
-      #kdePackages.calendarsupport
-      #kdePackages.kdepim-addons
-      #kdePackages.kdepim-runtime
-      #kdePackages.kontact
-      #kdePackages.libkdepim      
-      #kdePackages.pimcommon
-
-      #libsForQt5.akonadi
-      #libsForQt5.akonadi-calendar
-      #libsForQt5.akonadi-calendar-tools
-      #libsForQt5.akonadi-contacts
-      #libsForQt5.akonadi-import-wizard
-      #libsForQt5.akonadi-mime      
-      #libsForQt5.akonadi-notes
-      #libsForQt5.akonadi-search
-      #libsForQt5.akonadiconsole
-      #libsForQt5.kdepim-addons
-      #libsForQt5.kdepim-runtime
-      #libsForQt5.libkdepim
-      #libsForQt5.merkuro
-
-      #mesa
-      #megasync
-      #gnomeExtensions.mock-tray
     ];
   };
 } 

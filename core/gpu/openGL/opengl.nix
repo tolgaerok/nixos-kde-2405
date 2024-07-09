@@ -22,16 +22,16 @@ with lib;
       # Install additional packages that improve graphics performance and compatibility.
       #---------------------------------------------------------------------
       extraPackages = with pkgs; [
+        # nvidia-thrust
+        # nvidia-thrust-cuda
+        # nvidia-thrust-intel
+        amdvlk
         intel-media-driver # LIBVA_DRIVER_NAME=iHD
         libvdpau-va-gl
         nvidia-vaapi-driver
-        # nvidia-thrust-cuda
-        # nvidia-thrust-intel
-        # nvidia-thrust
         vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
         vaapiVdpau
         vulkan-validation-layers
-        amdvlk
       ];
       extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
     };

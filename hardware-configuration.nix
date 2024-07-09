@@ -83,8 +83,6 @@ in
     };
 
     kernelParams = [
-      "pcie_aspm=off"
-      "zswap.enabled=1"
       "elevator=kyber"              # Change IO scheduler to Kyber
       "fbcon=nodefer"               # prevent the kernel from blanking plymouth out of the fb
       "intel_iommu=on"              # Enable IOMMU
@@ -95,9 +93,11 @@ in
       "loglevel=3"                  # Set kernel log level to 3 (default)
       "logo.nologo"                 # disable boot logo if any
       "mitigations=off"             # turns off certain CPU security mitigations. It might enhance performance
+      "nmi_watchdog=0"
       "noirqdebug"                  # Disable IRQ debugging
       "nvidia_drm.fbdev=1"          # Enables the use of a framebuffer device for NVIDIA graphics. This can be useful for certain configurations.
       "nvidia_drm.modeset=1"        # Enables kernel modesetting for NVIDIA graphics. This is essential for proper graphics support on NVIDIA GPUs.
+      "pcie_aspm=off"
       "pti=off"                     # Disable Kernel Page Table Isolation (PTI)
       "quiet"                       # suppresses most boot messages during the system startup
       "rd.systemd.show_status=false" # Disable systemd boot status display
@@ -108,7 +108,7 @@ in
       "udev.log_level=3"            # Sets the overall udev log level to 3, displaying informational messages.
       "video.allow_duplicates=1"    # allows duplicate frames or similar, help smoothen video playback, especially on systems that struggle with rendering every single frame due to hardware limitations.
       "vt.global_cursor_default=0"  # Disable blinking cursor in text mode
-      "nmi_watchdog=0"
+      "zswap.enabled=1"
       # "intel_pstate=disable"          # Disabling the Intel P-state driver, which manages the CPU frequency scaling in some Intel processors
       # "isolcpus=0-7"                  # isolates CPUs 1 to 7 from the general system scheduler, often used for dedicated processing to prevent interference from unrelated tasks
       # "nohz_full=0-7"                 # isolates CPUs 1 to 7 from the tickless idle scheduler, which could potentially improve performance on those cores by reducing interruptions from timer ticks
@@ -227,4 +227,10 @@ in
   # Earlyoom killer
   systemd.oomd.enable = false;
   services.earlyoom.enable = true;
+
+  #---------------------------------------------------------------------
+  # Audio settings
+  #---------------------------------------------------------------------
+  # Enable sound with pipewire.
+  sound.enable = true;  
 }

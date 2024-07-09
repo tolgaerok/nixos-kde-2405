@@ -10,6 +10,8 @@ with lib;
   environment.systemPackages = with pkgs; [ nix-ld ];
 
   programs = {
+    gnupg.agent.enable = true; # Enable the GnuPG agent service for managing GPG keys.
+    mtr.enable = true; # Enable the MTR (My Traceroute) network diagnostic tool.
 
     # allow users to mount fuse filesystems with allow_other
     fuse.userAllowOther = true;
