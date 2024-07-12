@@ -42,7 +42,7 @@
 with lib;
 
 let
-  # Inherit varibles
+  # Inherit varibles.
   inherit (import ./core/variables) gitEmail gitUsername name country hostname locale;
 
   # Kernel options
