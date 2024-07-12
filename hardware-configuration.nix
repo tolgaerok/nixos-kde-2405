@@ -98,7 +98,7 @@ in
       "nvidia_drm.fbdev=1"          # Enables the use of a framebuffer device for NVIDIA graphics. This can be useful for certain configurations.
       "nvidia_drm.modeset=1"        # Enables kernel modesetting for NVIDIA graphics. This is essential for proper graphics support on NVIDIA GPUs.
       "pcie_aspm=off"
-      "pti=off"                     # Disable Kernel Page Table Isolation (PTI)
+      # "pti=off"                     # Disable Kernel Page Table Isolation (PTI)
       "quiet"                       # suppresses most boot messages during the system startup
       "rd.systemd.show_status=false" # Disable systemd boot status display
       "rd.udev.log_level=3"         # lower the udev log level to show only errors or worse
