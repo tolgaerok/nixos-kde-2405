@@ -42,20 +42,6 @@
 with lib;
 
 let
-  # Determine if the system has an NVIDIA GPU
-  isNvidiaSystem = builtins.readFile "/proc/driver/nvidia/version" != "";
-
-  # Determine if the system has an Intel GPU
-  isIntelSystem = builtins.pathExists "/sys/class/drm/card0/device/vendor" && builtins.readFile "/sys/class/drm/card0/device/vendor" == "0x8086\n";
-
-  # Choose gpu
-  gpuConfig = if isIntelSystem then
-    ./core/gpu/intel/intel-laptop/HP-Folio-9470M/Eilite-Folio-9470M-HD-Intel-4000.nix-STOP
-  else if isNvidiaSystem then
-    ./core/gpu/nvidia/nvidia-stable-opengl.nix-STOP
-  else
-    ./core/gpu/error.nix-STOP;
-
   # Inherit varibles
   inherit (import ./core/variables) gitEmail gitUsername name country hostname locale;
 
@@ -65,17 +51,14 @@ let
   zen-std-kernel = pkgs.linuxPackages_zen;   
 in
 {
-  imports = [
-    
-    # ./core/variables
+  imports = [    
+    # ./core/variables    
 
-    # gpuConfig
-
-    ./DE/gnome46.nix
+    ./desktop-env/dsk_gnome.nix
     ./cachix.nix
     ./core/boot/efi/efi.nix
     ./core/environment
-    ./core/gpu/nvidia/nvidia-stable-opengl # NVIDIA with hardware acceleration (Open-GL) for GT-1030++
+    ./core/gpu
     ./core/modules
     ./core/packages
     ./core/programs
@@ -145,8 +128,7 @@ in
       group = "${name}";
     };
 
-    users."${name}" = {
-      homeMode = "755";
+    users."${name}" = {      
       isNormalUser = true;
       description = "${name}";
       extraGroups = [
@@ -180,86 +162,78 @@ in
       ];
 
       packages = with pkgs; [ 
+        ### Utilities
         acpi
         bcachefs-tools
-        clementine
-        cpufrequtils
-        cpupower-gui
         direnv
         duf
         ethtool
-        firefox
-        flameshot
         fortune
-        gimp-with-plugins
         git
         git-up
-        gnome-extension-manager
-        gnome-usage
-        gnome.dconf-editor
-        gnome.file-roller
-        gnome.gnome-disk-utility
-        gnome.gnome-software
-        gnome.gnome-tweaks
-        gnome.gvfs
-        gnome.rygel
-        gnome.simple-scan
-        gnomeExtensions.appindicator
-        gnomeExtensions.dash-to-dock
-        gnomeExtensions.just-perfection
-        gnomeExtensions.logo-menu
-        gnomeExtensions.wifi-qrcode
-        gnomeExtensions.wireless-hid
-        google-chrome
-        gupnp-tools # UPNP tools USAGE: gupnp-universal-cp
-        kate
-        kdePackages.kate
-        kdePackages.spectacle
         keyutils
         libnotify
-        libsForQt5.qt5.qtgraphicaleffects
-        libsForQt5.qt5.qtquickcontrols2
-        libsForQt5.spectacle
-        libwps
         lm_sensors
-        lolcat
-        megasync
-        mesa
-        mpv
         neofetch
         nix-prefetch-git
         nixfmt-rfc-style
         notify
         notify-desktop
-        polkit
-        polkit_gnome        
         powerstat
         powertop
         sutils
         tlp
         unrar
         unzip
+        zstd
+
+        ### Applications
+        clementine
+        cpufrequtils
+        cpupower-gui
+        firefox
+        flameshot
+        gimp-with-plugins
+        google-chrome
+        gupnp-tools
+        kate
+        kdePackages.kate
+        kdePackages.spectacle
+        libwps
+        lolcat
+        megasync
+        mp3fs
+        mpv
+        polkit
+        polkit_gnome
         variety
         vscode
         vscode-extensions.brettm12345.nixfmt-vscode
         wpsoffice
-        zstd   
 
-        # Make sure that every character can be displayed by adding this font
-        noto-fonts 
-        # qt recommends this system package for wayland
-        qt6.qtwayland  
-        xorg.libxcb # required for steam according to some people, but steam worked without it too 
-        # automount
+        ### Libraries
+        libsForQt5.qt5.qtgraphicaleffects
+        libsForQt5.qt5.qtquickcontrols2
+        libsForQt5.spectacle
+        mesa
+
+        ### Fonts
+        noto-fonts
+
+        ### System Packages
+        qt6.qtwayland
+        xorg.libxcb
         udiskie
+
       ];
 
       openssh = {
         authorizedKeys = {
           keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGg5V+YAm36cZcZBZz1fv7+0kP05DpoGs1EhcrlI09i kingtolga@gmail.com"
+            # NEW -> Jul 12 2024   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOgYpmkzd4gwbnFo25VQcGp1rGiYtYjRv3RvETD0nAz/"
           ];
-          keyFiles = [ /home/${name}/.ssh/id_ed25519.pub ];
+          # keyFiles = [ /home/${name}/.ssh/id_ed25519.pub ];
         };
       };
     };

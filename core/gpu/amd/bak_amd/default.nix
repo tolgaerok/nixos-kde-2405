@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 { config, pkgs, lib, ... }:
 
 # AMD-GPU related
@@ -27,15 +26,4 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = [ "amdgpu" ];
-=======
-{ ... }:
-{
-
-  imports = [
-    # ./amd_pro.nix
-    ../openGL/opengl.nix
-    ./amd_drivers.nix
-    ./amd_pkgs.nix
-  ];
->>>>>>> 9816fb0 ((ツ)_/¯ Edit: 12-07-2024 10:36:15 PM)
 }

@@ -143,7 +143,7 @@ in
   };
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/c9cff38c-35a9-4a1a-9762-b052263a3183";
+    { device = "/dev/disk/by-uuid/8d62f067-9d09-4f44-90f5-24dbcb51c8d8";
       fsType = "ext4";
 
     # Optimize SSD
@@ -159,7 +159,7 @@ in
   };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/7D4E-CBD5";
+    { device = "/dev/disk/by-uuid/2C1E-787B";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
@@ -182,16 +182,7 @@ in
   };
 
   # Zswap requires a swapfile or partition to work correctly
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    # Swap is used when your RAM is full. It shouldn't happen often, 
-    # but you will be thankful that you have it when it is needed.
-
-    # RAM size (27 GB) + 2 GB (since I have enough storage space)
-    # I will use 8GB as Folio has 8GB - but a total of 10GB swap is more then enough
-    size = (1024 * 8) + (1024 * 2); # RAM size + 2 GB (since I have enough storage space)
-    priority = 10;
-  }];
+  swapDevices = [];
 
   networking = {
     useDHCP = lib.mkDefault true;
