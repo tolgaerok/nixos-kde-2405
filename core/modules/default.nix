@@ -13,6 +13,7 @@
     # ./testfonts.nix
     ./appimage-registration # Credits to Brian Francisco
     ./custom-pkgs           # personal coded scriptBin's
+    ./custom-scripts
     ./iphone/iphone.nix
     ./my-fonts
     ./openRGB
