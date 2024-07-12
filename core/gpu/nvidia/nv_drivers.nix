@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
@@ -10,10 +11,11 @@
 {
   imports = [
     # "./nvidia-docker.nix"    # Include the necessary file for Nvidia virtualization (if needed)
+    # inputs.nixos-hardware.nixosModules.common-gpu-nvidia
     ../openGL/opengl.nix
     ./included/cachix.nix
     ./nv_vaapi.nix
-  ];  
+  ];
 
   hardware = {
     enableAllFirmware = true;
@@ -25,11 +27,15 @@
       nvidiaSettings = true;
 
       ### Enable power management
-      powerManagement.enable = true; # Fix Suspend issue
-
+      # powerManagement.enable = true; # Fix Suspend issue
+      powerManagement = {
+        enable = true;
+        finegrained = false;
+      };
+      prime.offload.enable = false;
       ### Select the appropriate driver version for your GPU
-      package = config.boot.kernelPackages.nvidiaPackages.production;
-      # package = config.boot.kernelPackages.nvidiaPackages.stable;
+      #package = config.boot.kernelPackages.nvidiaPackages.production;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
 
       vaapi = {
         enable = true;
