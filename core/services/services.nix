@@ -28,6 +28,7 @@ in
 {
   imports = [
     ./samba 
+    ./extra-printers/HL2130_NET_DADS_LASER.nix
   ];
 
   # ----------------------------------------------
