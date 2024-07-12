@@ -11,7 +11,7 @@
 {
   imports = [
     # "./nvidia-docker.nix"    # Include the necessary file for Nvidia virtualization (if needed)
-    # inputs.nixos-hardware.nixosModules.common-gpu-nvidia
+    <nixos-hardware/common/gpu/nvidia>
     ../openGL/opengl.nix
     ./included/cachix.nix
     ./nv_vaapi.nix
