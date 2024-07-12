@@ -230,8 +230,8 @@ in
       openssh = {
         authorizedKeys = {
           keys = [
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGg5V+YAm36cZcZBZz1fv7+0kP05DpoGs1EhcrlI09i kingtolga@gmail.com"
-            # NEW -> Jul 12 2024   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOgYpmkzd4gwbnFo25VQcGp1rGiYtYjRv3RvETD0nAz/"
+            #"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGg5V+YAm36cZcZBZz1fv7+0kP05DpoGs1EhcrlI09i kingtolga@gmail.com"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOgYpmkzd4gwbnFo25VQcGp1rGiYtYjRv3RvETD0nAz/"
           ];
           # keyFiles = [ /home/${name}/.ssh/id_ed25519.pub ];
         };
