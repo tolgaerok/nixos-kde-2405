@@ -26,9 +26,15 @@ in
     device = "/home/${name}/Pictures/CUSTOM-WALLPAPERS/";
     fsType = "none";
     options = [
-      "rw"
       "bind"
+      "rw"
+      "nodev"
+      "noexec"
+      "noatime"
+      "uid=1000"
+      "gid=100"
     ];
+    #mountOptions = [  ]; 
   };
 
   # Add a file system entry for the "MyGit" directory bind mount
