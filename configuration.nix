@@ -43,18 +43,24 @@ with lib;
 
 let
   # Inherit varibles..
-  inherit (import ./core/variables) gitEmail gitUsername name country hostname locale;
+  inherit (import ./core/variables)
+    gitEmail
+    gitUsername
+    name
+    country
+    hostname
+    locale
+    ;
 
   # Kernel options
   latest-std-kernel = pkgs.linuxPackages_latest;
   latest-xanmod-kernel = pkgs.linuxPackages_xanmod_latest;
-  zen-std-kernel = pkgs.linuxPackages_zen;   
+  zen-std-kernel = pkgs.linuxPackages_zen;
 in
 {
-  imports = [    
+  imports = [
     # ./core/variables    
 
-    ./desktop-env/dsk_gnome.nix
     ./cachix.nix
     ./core/boot/efi/efi.nix
     ./core/environment
@@ -65,9 +71,10 @@ in
     ./core/security
     ./core/services/services.nix
     ./core/system
+    ./desktop-env/dsk_gnome.nix
     ./hardware-configuration.nix
     ./network
-  ]; 
+  ];
 
   #---------------------------------------------------------------------
   # Custom kernel selection from user
@@ -75,21 +82,21 @@ in
   boot.kernelPackages = latest-std-kernel;
 
   # Enable UPNP for gupnp-tools # UPNP tools USAGE: gupnp-universal-cp
-  programs = {    
+  programs = {
     git = {
       enable = true;
       config = {
         user.name = "${gitUsername}";
         user.email = "${gitEmail}";
       };
-    };    
+    };
     ssh.startAgent = true; # Enable the SSH agent for managing SSH keys.
   };
-  
+
   #---------------------------------------------------------------------
   # Networking
   #---------------------------------------------------------------------
-  networking.hostName = "${hostname}";  
+  networking.hostName = "${hostname}";
 
   # -----------------------------------------------
   # Locale settings
@@ -128,7 +135,7 @@ in
       group = "${name}";
     };
 
-    users."${name}" = {      
+    users."${name}" = {
       isNormalUser = true;
       description = "${name}";
       extraGroups = [
@@ -161,7 +168,7 @@ in
         "wheel" # Enable ‘sudo’ for the user.
       ];
 
-      packages = with pkgs; [ 
+      packages = with pkgs; [
         ### Utilities
         acpi
         bcachefs-tools
@@ -224,7 +231,6 @@ in
         qt6.qtwayland
         xorg.libxcb
         udiskie
-
       ];
 
       openssh = {

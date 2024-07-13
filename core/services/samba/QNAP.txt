@@ -1,0 +1,459 @@
+[global]
+passdb backend = smbpasswd
+workgroup = WORKGROUP
+security = USER
+server string = QNAP-PRO+
+encrypt passwords = Yes
+username level = 0
+map to guest = Bad User
+max log size = 10
+socket options = TCP_NODELAY SO_KEEPALIVE SO_SNDBUF=262144 SO_RCVBUF=131072
+os level = 20
+preferred master = no
+dns proxy = No
+smb passwd file=/etc/config/smbpasswd	
+username map = /etc/config/smbusers
+guest account = guest
+directory mask = 0777
+create mask = 0777
+oplocks = yes
+locking = yes
+disable spoolss = no
+load printers = no
+veto files = /.AppleDB/.AppleDouble/.AppleDesktop/:2eDS_Store/Network Trash Folder/Temporary Items/TheVolumeSettingsFolder/.@__thumb/.@__desc/:2e*/.@__qini/.Qsync/.@upload_cache/.qsync/.qsync_sn/.@qsys/.digest/
+delete veto files = yes
+map archive = no
+map system = no
+map hidden = no
+map read only = no
+deadtime = 10
+use sendfile = yes
+unix extensions = no
+store dos attributes = yes
+client ntlmv2 auth = yes
+dos filetime resolution = no
+inherit acls = yes
+wide links = yes
+min receivefile size = 256
+case sensitive = auto
+domain master = auto
+local master = yes
+force unknown acl user = yes
+template homedir = /share/homes/DOMAIN=%D/%U
+domain logons = no
+enhance acl v1 = yes
+remove everyone = yes
+kernel oplocks = no
+mangled names = yes
+printcap cache time = 0
+wins support = yes
+conn log = no
+pid directory = /var/lock
+server role = auto
+lock directory = /share/MD0_DATA/.samba/lock
+state directory = /share/MD0_DATA/.samba/state
+cache directory = /share/MD0_DATA/.samba/cache
+acl allow execute always = yes
+min protocol = SMB2_02
+gensec:require_pac = true
+host msdfs = yes
+#############################################################################################################################################################
+# Set AIO (Asynchronous I/O) read size to 0,
+# 0 means that Samba should attempt to automatically determine the optimal read size based on the characteristics of the underlying filesystem.
+# Set AIO write size to 0
+# Enable VFS (Virtual File System) objects including ACL (Access Control List) xattr, Catia, and Streams xattr
+# Set maximum IPC protocol to SMB3 for the client
+#client ipc max protocol = SMB3
+# Set minimum IPC protocol to COREPLUS for the client
+#client ipc min protocol = COREPLUS
+# Set maximum SMB protocol to SMB3 for the client
+#client max protocol = SMB3
+# Set maximum SMB protocol to SMB3 for the server
+#server max protocol = SMB3
+# Set minimum SMB protocol to COREPLUS for the server
+#server min protocol = COREPLUS
+#client min protocol = COREPLUS
+# Store additional metadata or attributes associated with files or directories on the file system.
+#ea support = yes
+# Serving files to Mac clients while maintaining compatibility with macOS-specific features and behaviors
+#fruit:metadata = stream
+#fruit:model = Macmini
+#fruit:veto_appledouble = no
+#fruit:posix_rename = yes
+#fruit:zero_file_id = yes
+#fruit:wipe_intentionally_left_blank_rfork = yes
+#fruit:delete_empty_adfiles = yes
+#fruit:copyfile = yes
+############################################################################################################################################################
+name resolve order = host wins bcast
+[Multimedia]
+comment = System default share
+path = /share/MD0_DATA/Multimedia
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = 
+write list = "admin","Garrin","dean","tolga",@"administrators","kt"
+valid users = "root","admin","Garrin","dean","tolga",@"administrators","kt"
+inherit permissions = yes
+recycle bin = yes
+mangled names = yes
+recycle bin administrators only = no
+qbox = yes
+[Download]
+comment = System default share
+path = /share/MD0_DATA/Download
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = "kt"
+write list = "admin","dean","tolga",@"administrators"
+valid users = "root","admin","dean","tolga","kt",@"administrators"
+inherit permissions = yes
+recycle bin = yes
+[Recordings]
+comment = System default share
+path = /share/MD0_DATA/Recordings
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = @"everyone","kt"
+write list = "admin","dean","tolga",@"administrators"
+valid users = "root",@"everyone","admin","dean","tolga","kt",@"administrators"
+inherit permissions = yes
+recycle bin = yes
+admin users = 
+admin only = 
+[Web]
+comment = System default share
+path = /share/MD0_DATA/Web
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = @"everyone","kt"
+write list = "admin","tolga",@"administrators"
+valid users = "root",@"everyone","admin","tolga","kt",@"administrators"
+inherit permissions = yes
+recycle bin = yes
+[Usb]
+comment = System default share
+path = /share/MD0_DATA/Usb
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = @"everyone","kt"
+write list = "admin","tolga",@"administrators"
+valid users = "root",@"everyone","admin","tolga","kt",@"administrators"
+inherit permissions = yes
+recycle bin = yes
+[Public]
+comment = System default share
+path = /share/MD0_DATA/Public
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = 
+read list = "Garrin","kt"
+write list = "admin",@"everyone","guest","dean",@"administrators","tolga"
+valid users = "root","admin",@"everyone","guest","Garrin","dean","tolga",@"administrators","kt"
+inherit permissions = yes
+recycle bin = yes
+admin users = 
+admin only = 
+[Network Recycle Bin 1]
+comment = [Mirror Disk Volume: Drive 1 2]
+path = /share/MD0_DATA/Network Recycle Bin
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = @"everyone","kt"
+write list = "admin","dean",@"administrators","tolga"
+valid users = "root",@"everyone","admin","dean","kt",@"administrators","tolga"
+inherit permissions = yes
+veto files = 
+admin users = 
+admin only = 
+recycle bin = yes
+[VizData]
+comment = 
+path = /share/MD0_DATA/VizData
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = 
+read list = 
+write list = @"administrators","guest","admin","tolga"
+valid users = "root",@"administrators","guest","admin","tolga"
+inherit permissions = yes
+recycle bin = yes
+admin users = 
+admin only = 
+mangled names = yes
+recycle bin administrators only = no
+[Clients]
+comment = 
+path = /share/MD0_DATA/Clients
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = 
+write list = "admin","dean","tolga",@"administrators"
+valid users = "root","admin","dean","tolga",@"administrators"
+inherit permissions = yes
+admin users = 
+admin only = 
+recycle bin = yes
+[Backup]
+comment = 
+path = /share/MD0_DATA/Backup
+browsable = yes
+oplocks = no
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = 
+write list = "admin","dean","tolga",@"administrators"
+valid users = "root","admin","dean","tolga",@"administrators"
+inherit permissions = yes
+admin users = 
+admin only = 
+recycle bin = yes
+[techs]
+comment = 
+path = /share/MD0_DATA/techs
+browsable = no
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = 
+write list = "admin","tolga",@"administrators"
+valid users = "root","admin","tolga",@"administrators"
+inherit permissions = yes
+admin users = 
+admin only = 
+recycle bin = yes
+[Network Recycle Bin 3]
+comment = [Mirror Disk Volume: Drive 3 4]
+path = /share/MD1_DATA/Network Recycle Bin
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = @"everyone","kt"
+write list = "admin","dean",@"administrators"
+valid users = "root",@"everyone","admin","dean","kt",@"administrators"
+inherit permissions = yes
+recycle bin = yes
+[Archive]
+comment = 
+path = /share/MD1_DATA/Archive
+browsable = yes
+oplocks = yes
+ftp write only = no
+public = yes
+invalid users = "guest"
+read list = 
+write list = "admin","dean","tolga",@"administrators"
+valid users = "root","admin","dean","tolga",@"administrators"
+inherit permissions = yes
+admin users = 
+admin only = 
+recycle bin = yes
+[homes]
+comment = System default share
+path = /share/MD0_DATA/homes
+browsable = yes
+oplocks = yes
+ftp write only = no
+recycle bin = yes
+recycle bin administrators only = no
+public = yes
+invalid users = 
+read list = 
+write list = "admin","tolga",@"administrators"
+valid users = "root","admin","tolga",@"administrators"
+inherit permissions = yes
+[Clients2]
+comment = 
+path = /share/MD1_DATA/Clients2
+browsable = yes
+oplocks = yes
+ftp write only = no
+recycle bin = yes
+recycle bin administrators only = no
+public = yes
+invalid users = "guest"
+read list = 
+write list = "admin","dean","tolga",@"administrators"
+valid users = "root","admin","dean","tolga",@"administrators"
+inherit permissions = yes
+admin users = 
+admin only = 
+[MY-QNAP]
+comment = 12TB
+path = /share/MD0_DATA/MY-QNAP
+browsable = yes
+oplocks = yes
+ftp write only = no
+recycle bin = yes
+recycle bin administrators only = no
+qbox = yes
+public = yes
+invalid users = 
+read list = "guest"
+write list = "tolga","admin",@"administrators"
+valid users = "root","tolga","admin",@"administrators","guest"
+inherit permissions = yes
+smb encrypt = disabled
+mangled names = yes
+admin users = 
+admin only = 
+[FTP]
+comment = 
+path = /share/MD1_DATA/FTP
+browsable = yes
+oplocks = yes
+ftp write only = yes
+recycle bin = yes
+recycle bin administrators only = yes
+qbox = no
+public = yes
+invalid users = "guest"
+read list = 
+write list = "admin","tolga",@"friend",@"administrators"
+valid users = "root","admin","tolga",@"friend",@"administrators"
+inherit permissions = yes
+smb encrypt = disabled
+mangled names = yes
+admin users = 
+admin only = 
+[PortalFolderLinux]
+comment = UNIX shares
+path = /share/MD0_DATA/.@msdfs_root/PortalFolderLinux
+browsable = yes
+public = yes
+msdfs root = yes
+invalid users = "guest"
+[PortalFolderMixed]
+comment = WTF
+path = /share/MD0_DATA/.@msdfs_root/PortalFolderMixed
+browsable = yes
+public = yes
+msdfs root = yes
+invalid users = "guest"
+[home]
+comment = Home
+path = %H
+browsable = yes
+oplocks = yes
+ftp write only = no
+inherit permissions = yes
+invalid users = "guest"
+writable = yes
+read list = "%u"
+write list = "%u"
+valid users = "%u"
+root preexec = /sbin/create_home -u '%q'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[global]
+passdb backend = smbpasswd
+workgroup = WORKGROUP
+security = USER
+server string = QNAP-PRO+
+encrypt passwords = Yes
+username level = 0
+map to guest = Bad User
+max log size = 10
+socket options = TCP_NODELAY SO_KEEPALIVE SO_SNDBUF=262144 SO_RCVBUF=131072
+os level = 20
+preferred master = no
+dns proxy = No
+smb passwd file=/etc/config/smbpasswd	
+username map = /etc/config/smbusers
+guest account = guest
+directory mask = 0777
+create mask = 0777
+oplocks = yes
+locking = yes
+disable spoolss = no
+load printers = no
+veto files = /.AppleDB/.AppleDouble/.AppleDesktop/:2eDS_Store/Network Trash Folder/Temporary Items/TheVolumeSettingsFolder/.@__thumb/.@__desc/:2e*/.@__qini/.Qsync/.@upload_cache/.qsync/.qsync_sn/.@qsys/.digest/
+delete veto files = yes
+map archive = no
+map system = no
+map hidden = no
+map read only = no
+deadtime = 10
+use sendfile = yes
+unix extensions = no
+store dos attributes = yes
+client ntlmv2 auth = yes
+dos filetime resolution = no
+inherit acls = yes
+wide links = yes
+min receivefile size = 256
+case sensitive = auto
+domain master = auto
+local master = yes
+force unknown acl user = yes
+template homedir = /share/homes/DOMAIN=%D/%U
+domain logons = no
+enhance acl v1 = yes
+remove everyone = yes
+kernel oplocks = no
+mangled names = yes
+printcap cache time = 0
+wins support = yes
+conn log = no
+pid directory = /var/lock
+server role = auto
+lock directory = /share/MD0_DATA/.samba/lock
+state directory = /share/MD0_DATA/.samba/state
+cache directory = /share/MD0_DATA/.samba/cache
+acl allow execute always = yes
+min protocol = SMB2_02
+gensec:require_pac = true
+host msdfs = yes
+# Larger Asynchronous I/O sizes
+aio read size = 256
+aio write size = 256
+use sendfile = yes
+read raw = yes
+write raw = yes
+aio max threads = 100
+allocation roundup size = 1048576
+max xmit = 65535
+getwd cache = yes
+name resolve order = host wins bcast
