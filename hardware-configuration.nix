@@ -60,7 +60,11 @@ in
       "net.ipv4.tcp_keepalive_intvl" = 15;             # TCP keepalive interval in seconds for faster detection of connection issues.
       "net.ipv4.tcp_keepalive_probes" = 3;             # TCP keepalive probes for faster detection of connection issues.
       "net.ipv4.tcp_keepalive_time" = 120;             # TCP keepalive interval in seconds for faster detection of connection issues.
-
+      "net.ipv4.udp_rmem_min" = 16384;
+      "net.ipv4.udp_wmem_min" = 16384;
+      "net.ipv4.tcp_tw_reuse" = 1;
+      "net.ipv4.tcp_mtu_probing" = 1;
+      
       # Virtual Memory Settings
       "vm.dirty_background_bytes" = 67108864;          # Reduce dirty background bytes to 64 MB for faster writeback initiation.
       "vm.dirty_bytes" = 268435456;                    # Increase dirty bytes to 256 MB for more efficient dirty memory handling.
@@ -84,34 +88,40 @@ in
 
     kernelParams = [
       "elevator=kyber"              # Change IO scheduler to Kyber
-      "fbcon=nodefer"               # prevent the kernel from blanking plymouth out of the fb
+      "fbcon=nodefer"               # Prevent the kernel from blanking plymouth out of the framebuffer
       "intel_iommu=on"              # Enable IOMMU
       "io_delay=none"               # Disable I/O delay accounting
       "iomem=relaxed"               # Allow more relaxed I/O memory access
-      "iommu=pt"                    # Enables passthrough mode for the IOMMU, allowing direct access to hardware devices.
-      "irqaffinity=0-7"             # Set IRQ affinity to CPUs 0-3 (Intel Core i7-3667U specific)
+      "iommu=pt"                    # Enables passthrough mode for the IOMMU, allowing direct access to hardware devices
+      "irqaffinity=0-7"             # Set IRQ affinity to CPUs 0-7
       "loglevel=3"                  # Set kernel log level to 3 (default)
-      "logo.nologo"                 # disable boot logo if any
-      "mitigations=off"             # turns off certain CPU security mitigations. It might enhance performance
-      "nmi_watchdog=0"
+      "logo.nologo"                 # Disable boot logo if any
+      "mitigations=off"             # Turn off certain CPU security mitigations. It might enhance performance
+      "nmi-watchdog=0"              # Disable the non-maskable interrupt (NMI) watchdog
       "noirqdebug"                  # Disable IRQ debugging
-      "nvidia_drm.fbdev=1"          # Enables the use of a framebuffer device for NVIDIA graphics. This can be useful for certain configurations.
-      "nvidia_drm.modeset=1"        # Enables kernel modesetting for NVIDIA graphics. This is essential for proper graphics support on NVIDIA GPUs.
-      "pcie_aspm=off"
-      # "pti=off"                     # Disable Kernel Page Table Isolation (PTI)
-      "quiet"                       # suppresses most boot messages during the system startup
+      "nvidia-drm.modeset=1"        # Enable kernel modesetting for NVIDIA graphics
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"   # Preserve video memory allocations across suspend/resume
+      "nvidia.NVreg_TemporaryFilePath=/var/tmp"         # Set temporary file path for NVIDIA driver
+      "nvidia.NVreg_UsePageAttributeTable=1"            # Enable NVIDIA Page Attribute Table
+      "nvidia.NVreg_EnablePCIeGen3=1"                   # Enable PCIe Gen3 for NVIDIA
+      "nvidia.NVreg_RegistryDwords=RMI2cSpeed=100"      # Set registry tweak for NVIDIA
+      "quiet"                        # Suppresses most boot messages during system startup
       "rd.systemd.show_status=false" # Disable systemd boot status display
-      "rd.udev.log_level=3"         # lower the udev log level to show only errors or worse
-      "rootdelay=0"                 # No delay when mounting root filesystem
-      "splash"                      # Enable graphical boot splash screen
-      "threadirqs"                  # Enable threaded interrupt handling
-      "udev.log_level=3"            # Sets the overall udev log level to 3, displaying informational messages.
-      "video.allow_duplicates=1"    # allows duplicate frames or similar, help smoothen video playback, especially on systems that struggle with rendering every single frame due to hardware limitations.
-      "vt.global_cursor_default=0"  # Disable blinking cursor in text mode
-      "zswap.enabled=1"
+      "rd.udev.log_level=3"          # Lower the udev log level to show only errors or worse
+      "rootdelay=0"                  # No delay when mounting root filesystem
+      "splash"                       # Enable graphical boot splash screen
+      "threadirqs"                   # Enable threaded interrupt handling
+      "udev.log_level=3"             # Set overall udev log level to 3, displaying informational messages
+      "video.allow_duplicates=1"     # Allow duplicate frames or similar, helps smooth video playback
+      "vt.global_cursor_default=0"   # Disable blinking cursor in text mode
+      "zswap.compressor=lz4"         # Set zswap compressor to lz4
+      "zswap.enabled=1"              # Enable zswap
+      "zswap.max_pool_percent=10"    # Set zswap maximum pool percentage to 10%
+      "zswap.zpool=zsmalloc"         # Set zswap zpool to zsmalloc
       # "intel_pstate=disable"          # Disabling the Intel P-state driver, which manages the CPU frequency scaling in some Intel processors
       # "isolcpus=0-7"                  # isolates CPUs 1 to 7 from the general system scheduler, often used for dedicated processing to prevent interference from unrelated tasks
       # "nohz_full=0-7"                 # isolates CPUs 1 to 7 from the tickless idle scheduler, which could potentially improve performance on those cores by reducing interruptions from timer ticks
+      # "pcie_aspm=off"                 # Disable PCIe Active State Power Management
       # "rcu_nocbs=0-7"                 # designates CPUs 1 to 7 for RCU (Read-Copy Update) processing, isolating them from other system tasks to enhance performance
       # "rd.systemd.show_status=auto"   # disable systemd status messages
       # "systemd.show_status=auto"      # Commented out, not used in this configuration
