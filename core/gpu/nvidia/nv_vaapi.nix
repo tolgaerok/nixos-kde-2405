@@ -19,7 +19,7 @@ in {
 
       av1Support = lib.mkOption {
         type = bool;
-        default = false;
+        default = true;
         description =
           "Whether to enable av1 support. Should be disabled for GeForce 20 and earlier.";
       };

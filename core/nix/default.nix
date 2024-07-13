@@ -71,8 +71,8 @@ in
       sandbox = "relaxed";     # Sandbox mode for running tasks, allowing broader system access for flexibility
 
       # Accelerate package building (optimized for 8GB RAM and dual-core processor with Hyper-Threading)
-      buildCores = lib.mkDefault 8;              # Specify 4 build cores for parallel building
-      max-jobs = "auto";                # Set to 4 as the i7-3667U has 2 cores with 4 threads
+      buildCores = lib.mkDefault 8;              # Specify build cores for parallel building
+      max-jobs = "auto";                         # Folio: Set to 4 as the i7-3667U has 2 cores with 4 threads
       speedFactor = 2;                           # Set speed factor to 2 for build performance optimization
 
       trusted-users = [
@@ -92,10 +92,10 @@ in
     daemonIOSchedPriority = 7;         # Set I/O scheduling priority for daemon processes to 7
 
     gc = {
-      automatic = true;                  # Enable automatic execution of the task
-      dates = "weekly";                  # Schedule the task to run weekly
+      automatic = true;                     # Enable automatic execution of the task
+      dates = "daily 20:00";                # Schedule the task to run weekly / daily and 24hr time
       options = "--delete-older-than 10d";  # Specify options for the task: delete files older than 10 days
-      randomizedDelaySec = "14m";        # Introduce a randomized delay of up to 14 minutes before executing the task
+      randomizedDelaySec = "14m";           # Introduce a randomized delay of up to 14 minutes before executing the task
     };
 
     # Opinionated: enable channels
@@ -113,7 +113,7 @@ in
     config.nix.registry;
 
   # XDG  paths
-  #environment.sessionVariables = rec {
+  # environment.sessionVariables = rec {
   #  XDG_CACHE_HOME = "$HOME/.cache";
   #  XDG_CONFIG_HOME = "$HOME/.config";
   #  XDG_DATA_HOME = "$HOME/.local/share";
@@ -121,9 +121,9 @@ in
   #  XDG_STATE_HOME = "$HOME/.local/state";
 
     # Not officially in the specification
-    #XDG_BIN_HOME = "$HOME/.local/bin";
-    #PATH = [
+    # XDG_BIN_HOME = "$HOME/.local/bin";
+    # PATH = [
     #  "${XDG_BIN_HOME}"
-    #];
-  #};
+    # ];
+  # };
 }

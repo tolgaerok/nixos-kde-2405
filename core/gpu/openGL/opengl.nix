@@ -15,6 +15,7 @@ with lib;
   hardware = {
     opengl = {
       enable = true;
+      # AllowFlipping = "Off";
       driSupport = lib.mkDefault true;
       driSupport32Bit = lib.mkDefault true;
 
